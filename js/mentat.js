@@ -57,9 +57,18 @@ var dragDrop = {
     return false;
   },
 
-  releaseElement: function () {
+  releaseElement: function (e) {
+    var under = null;
     document.removeEventListener("mousemove", dragDrop.dragMouse, false);
     document.removeEventListener("mouseup", dragDrop.releaseElement, false);
+    dragDrop.draggedObject.style.display = 'none';
+    under = document.elementFromPoint(e.clientX, e.clientY);
+    if (under && under.nodeName === 'TD' && under.innerHTML === '') {
+      under.innerHTML = dragDrop.draggedObject.innerHTML;
+      dragDrop.draggedObject.parentNode.removeChild(dragDrop.draggedObject);
+    } else {
+      dragDrop.draggedObject.style.display = 'inline-block';
+    }
     dragDrop.draggedObject = null;
   }
 }
