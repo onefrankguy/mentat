@@ -32,6 +32,7 @@ ul {
   text-align: center;
 }
 li {
+  position: relative;
   display: inline-block;
   height: 2em;
   width: 2em;
