@@ -38,8 +38,12 @@ var dragDrop = {
     if (dragDrop.draggedObjct) {
       dragDrop.releaseElement();
     }
-    object.style.left = "0";
-    object.style.top = "0";
+    if (isNaN(parseInt(object.style.left))) {
+      object.style.left = "0px";
+    }
+    if (isNaN(parseInt(object.style.top))) {
+      object.style.top = "0px";
+    }
     dragDrop.startX = parseInt(object.style.left);
     dragDrop.startY = parseInt(object.style.top);
     dragDrop.draggedObject = object;
