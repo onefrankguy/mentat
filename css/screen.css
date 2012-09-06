@@ -39,4 +39,6 @@ li {
   width: 2em;
   line-height: 2em;
   border: 0.0625em solid #000;
+  background: #fff;
+  cursor: default;
 }
