@@ -83,5 +83,18 @@
     <li>0</li>
     <li>0</li>
   </ul>
+  <script type="text/javascript">
+    (function () {
+      "use strict";
+
+      function $(id) {
+        return document.getElementById(id);
+      }
+
+      function html(id, text) {
+        $(id).innerHTML = text;
+      }
+    }());
+  </script>
 </body>
 </html>
