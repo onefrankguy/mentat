@@ -8,6 +8,8 @@
   outline: 0;
   padding: 0;
   margin: 0;
+  background: #fff;
+  cursor: default;
   -webkit-user-select: none;
 }
 body {
@@ -39,6 +41,4 @@ li {
   width: 2em;
   line-height: 2em;
   border: 0.0625em solid #000;
-  background: #fff;
-  cursor: default;
 }
