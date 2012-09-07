@@ -11,6 +11,30 @@ function html(id, text) {
   $(id).innerHTML = text;
 }
 
+function countScore(total, factor) {
+  return (total % factor === 0) ? total / factor : 0;
+}
+
+function updateScore(element) {
+  var i, j, value, score, classes, matches, total;
+  score = parseInt($('score').innerHTML);
+  classes = element.className.replace(/\s+/g, ' ').split(' ');
+  for (i = 0; i < classes.length; i += 1) {
+    total = 0;
+    matches = document.getElementsByClassName(classes[i]);
+    for (j = 0; j < matches.length; j += 1) {
+      value = parseInt(matches[j].innerHTML);
+      if (!isNaN(value)) {
+        total += value;
+      }
+    }
+    score += countScore(total, 3);
+    score += countScore(total, 5);
+    score += countScore(total, 7);
+  }
+  html('score', score);
+}
+
 var dragDrop = {
   initialMouseX: null,
   initialMouseY: null,
@@ -66,6 +90,7 @@ var dragDrop = {
     if (under && under.nodeName === 'TD' && under.innerHTML === '') {
       under.innerHTML = dragDrop.draggedObject.innerHTML;
       dragDrop.draggedObject.parentNode.removeChild(dragDrop.draggedObject);
+      updateScore(under);
     } else {
       dragDrop.draggedObject.style.display = 'inline-block';
     }
