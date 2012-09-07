@@ -31,6 +31,8 @@ td {
   border-top: 0.0625em solid #000;
 }
 ul {
+  display: block;
+  height: 2em;
   margin: 1em auto;
   text-align: center;
   list-style: none;

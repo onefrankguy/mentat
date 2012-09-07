@@ -92,6 +92,7 @@ var dragDrop = {
   startX: null,
   startY: null,
   draggedObject: null,
+  droppedObject: null,
 
   bind: function (element) {
     if (typeof element === "string") {
@@ -142,6 +143,15 @@ var dragDrop = {
     var dy = e.clientY - dragDrop.initialMouseY;
     dragDrop.draggedObject.style.left = dragDrop.startX + dx + "px";
     dragDrop.draggedObject.style.top = dragDrop.startY + dy + "px";
+    if (dragDrop.droppedObject) {
+      dragDrop.droppedObject.style.background = "#fff";
+    }
+    dragDrop.draggedObject.style.display = 'none';
+    dragDrop.droppedObject = document.elementFromPoint(e.clientX, e.clientY);
+    dragDrop.draggedObject.style.display = 'inline-block';
+    if (dragDrop.droppedObject && dragDrop.droppedObject.nodeName === 'TD' && dragDrop.droppedObject.innerHTML === '') {
+      dragDrop.droppedObject.style.background = "#ccc";
+    }
     return false;
   },
 
@@ -162,6 +172,10 @@ var dragDrop = {
       dragDrop.draggedObject.style.top = dragDrop.startY + "px";
     }
     dragDrop.draggedObject = null;
+    if (dragDrop.droppedObject) {
+      dragDrop.droppedObject.style.background = "#fff";
+    }
+    dragDrop.droppedObject = null;
   }
 }
 
