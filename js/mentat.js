@@ -93,6 +93,8 @@ var dragDrop = {
       updateScore(under);
     } else {
       dragDrop.draggedObject.style.display = 'inline-block';
+      dragDrop.draggedObject.style.left = dragDrop.startX + "px";
+      dragDrop.draggedObject.style.top = dragDrop.startY + "px";
     }
     dragDrop.draggedObject = null;
   }
