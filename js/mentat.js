@@ -1,7 +1,9 @@
 (function () {
 "use strict";
 
-var i, j, pieces = [];
+var i, j, k, pieces, currentPlayer;
+
+currentPlayer = 2;
 
 function $(id) {
   return document.getElementById(id);
@@ -61,9 +63,9 @@ function bonusScore(values) {
   return score;
 }
 
-function updateScore(element) {
+function updateScore(element, player) {
   var i, j, value, values, score, classes, matches, total;
-  score = parseInt($('score').innerHTML);
+  score = parseInt($('player' + player + '-score').innerHTML);
   classes = element.className.replace(/\s+/g, ' ').split(' ');
   for (i = 0; i < classes.length; i += 1) {
     total = 0;
@@ -81,7 +83,7 @@ function updateScore(element) {
     score += countScore(total, 7);
     score += bonusScore(values);
   }
-  html('score', score);
+  html('player' + player + '-score', score);
 }
 
 var dragDrop = {
@@ -95,7 +97,20 @@ var dragDrop = {
     if (typeof element === "string") {
       element = $(element);
     }
-    element.onmousedown = dragDrop.startDragMouse;
+    if (element) {
+      element.addEventListener("mousedown", dragDrop.startDragMouse, false);
+      element.style.color = "#000";
+    }
+  },
+
+  unbind: function (element) {
+    if (typeof element === "string") {
+      element = $(element);
+    }
+    if (element) {
+      element.removeEventListener("mousedown", dragDrop.startDragMouse, false);
+      element.style.color = "#fff";
+    }
   },
 
   startDragMouse: function (e) {
@@ -139,13 +154,26 @@ var dragDrop = {
     if (under && under.nodeName === 'TD' && under.innerHTML === '') {
       under.innerHTML = dragDrop.draggedObject.innerHTML;
       dragDrop.draggedObject.parentNode.removeChild(dragDrop.draggedObject);
-      updateScore(under);
+      updateScore(under, currentPlayer);
+      toggleTurn();
     } else {
       dragDrop.draggedObject.style.display = 'inline-block';
       dragDrop.draggedObject.style.left = dragDrop.startX + "px";
       dragDrop.draggedObject.style.top = dragDrop.startY + "px";
     }
     dragDrop.draggedObject = null;
+  }
+}
+
+function toggleTurn() {
+  var i;
+  for (i = 0; i < 8; i += 1) {
+    dragDrop.unbind("piece1" + i);
+    dragDrop.unbind("piece2" + i);
+  }
+  currentPlayer = (currentPlayer === 1) ? 2 : 1;
+  for (i = 0; i < 8; i += 1) {
+    dragDrop.bind("piece" + currentPlayer + i);
   }
 }
 
@@ -159,6 +187,7 @@ function shuffle(array) {
   }
 }
 
+pieces = [];
 for (i = 0; i < 4; i += 1) {
   for (j = 1; j <= 13; j += 1) {
     pieces.push(j);
@@ -166,9 +195,16 @@ for (i = 0; i < 4; i += 1) {
 }
 shuffle(pieces);
 
-for (i = 0; i < 8; i += 1) {
-  html("piece" + i, pieces[i]);
-  dragDrop.bind("piece" + i);
+for (i = 0, j = 0, k = 0; i < 16; i += 1) {
+  if (i % 2 === 0) {
+    html("piece1" + j, pieces[i]);
+    j += 1;
+  } else {
+    html("piece2" + k, pieces[i]);
+    k += 1;
+  }
 }
+
+toggleTurn();
 
 }());

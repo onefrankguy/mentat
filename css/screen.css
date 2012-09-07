@@ -17,7 +17,7 @@ body {
   margin: 1em auto;
 }
 table {
-  margin: 1em auto 0 auto;
+  margin: 1em auto;
   border-spacing: 0;
   border-bottom: 0.0625em solid #000;
   border-right: 0.0625em solid #000;
@@ -31,8 +31,9 @@ td {
   border-top: 0.0625em solid #000;
 }
 ul {
-  margin-top: 2em;
+  margin: 1em auto;
   text-align: center;
+  list-style: none;
 }
 li {
   position: relative;
