@@ -15,22 +15,71 @@ function countScore(total, factor) {
   return (total % factor === 0) ? total / factor : 0;
 }
 
+function countUnique(array) {
+  var i, keys;
+  keys = {};
+  for (i = 0; i < array.length; i += 1) {
+    keys[array[i]] = 1;
+  }
+  return Object.keys(keys).length;
+}
+
+function bonusScore(values) {
+  var i, score, straight, unique;
+  if (values.length <= 1) {
+    return 0;
+  }
+  unique = countUnique(values);
+  if (values.length <= 2) {
+    /* a pair */
+    if (unique === 1) return 2;
+    return 0;
+  }
+  if (values.length <= 3) {
+    /* a pair */
+    if (unique === 2) return 2;
+    /* three of a kind */
+    if (unique === 1) return 6;
+    return 0;
+  }
+  score = 0;
+  straight = 0;
+  values.sort();
+  for (i = 0; i < values.length - 1; i += 1) {
+    if (values[i] + 1 === values[i + 1]) {
+      straight += 1;
+    }
+  }
+  /* a straight */
+  if (straight === 4) score += 4;
+  /* a pair */
+  if (unique === 3) score += 2;
+  /* three of a kind */
+  if (unique === 2) score += 6;
+  /* four of a kind */
+  if (unique === 1) score += 12;
+  return score;
+}
+
 function updateScore(element) {
-  var i, j, value, score, classes, matches, total;
+  var i, j, value, values, score, classes, matches, total;
   score = parseInt($('score').innerHTML);
   classes = element.className.replace(/\s+/g, ' ').split(' ');
   for (i = 0; i < classes.length; i += 1) {
     total = 0;
+    values = [];
     matches = document.getElementsByClassName(classes[i]);
     for (j = 0; j < matches.length; j += 1) {
       value = parseInt(matches[j].innerHTML);
       if (!isNaN(value)) {
+        values.push(value);
         total += value;
       }
     }
     score += countScore(total, 3);
     score += countScore(total, 5);
     score += countScore(total, 7);
+    score += bonusScore(values);
   }
   html('score', score);
 }
