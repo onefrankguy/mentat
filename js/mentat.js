@@ -14,17 +14,31 @@ function html(id, text) {
   $(id).innerHTML = text;
 }
 
+function addClass(selector, value) {
+  if (typeof selector === 'string') {
+    selector = $(selector);
+  }
+  selector.className += ' ' + value;
+}
+
+function removeClass(selector, value) {
+  var regex = new RegExp(' ' + value, 'g');
+  if (typeof selector === 'string') {
+    selector = $(selector);
+  }
+  selector.className = selector.className.replace(regex, '');
+}
+
 function animate(element, klass, callback) {
   var wrapper = function () {
-    var regex = new RegExp(' ' + klass, 'g');
     if (callback) {
       callback();
     }
-    element.className = element.className.replace(regex, '');
+    removeClass(element, klass);
     element.removeEventListener('webkitTransitionEnd', wrapper, true);
   };
   element.addEventListener('webkitTransitionEnd', wrapper, true);
-  element.className += ' ' + klass;
+  addClass(element, klass);
 }
 
 function findCenter(element) {
@@ -194,13 +208,13 @@ var dragDrop = {
     dragDrop.draggedObject.style.left = dragDrop.startX + dx + "px";
     dragDrop.draggedObject.style.top = dragDrop.startY + dy + "px";
     if (dragDrop.droppedObject) {
-      dragDrop.droppedObject.className = dragDrop.droppedObject.className.replace(/ dropping/g, '');
+      removeClass(dragDrop.droppedObject, 'dropping');
     }
     dragDrop.draggedObject.style.display = 'none';
     dragDrop.droppedObject = document.elementFromPoint(e.clientX, e.clientY);
     dragDrop.draggedObject.style.display = 'inline-block';
     if (isPlayable(dragDrop.droppedObject)) {
-      dragDrop.droppedObject.className += ' dropping';
+      addClass(dragDrop.droppedObject, 'dropping');
     }
     return false;
   },
@@ -220,7 +234,7 @@ var dragDrop = {
     }
     dragDrop.draggedObject = null;
     if (dragDrop.droppedObject) {
-      dragDrop.droppedObject.style.background = "#fff";
+      removeClass(dragDrop.droppedObject, 'dropping');
     }
     dragDrop.droppedObject = null;
   }
