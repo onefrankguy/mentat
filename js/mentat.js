@@ -14,6 +14,20 @@ function html(id, text) {
   $(id).innerHTML = text;
 }
 
+function findCenter(element) {
+  var x = 0, y = 0;
+  if (element) {
+    x = element.offsetWidth / 2;
+    y = element.offsetHeight / 2;
+  }
+  while (element && !isNaN(element.offsetLeft) && !isNaN(element.offsetTop)) {
+    x += element.offsetLeft - element.scrollLeft;
+    y += element.offsetTop - element.scrollTop;
+    element = element.offsetParent;
+  }
+  return { x: x, y: y };
+}
+
 function countScore(total, factor) {
   return (total % factor === 0) ? total / factor : 0;
 }
@@ -199,6 +213,24 @@ var dragDrop = {
   }
 }
 
+function fakeMove(piece, tile) {
+  var pieceCenter, tileCenter, fakeMouseDown, fakeMouseUp;
+
+  pieceCenter = findCenter(piece);
+  fakeMouseDown = document.createEvent('MouseEvents');
+  fakeMouseDown.initMouseEvent('mousedown', true, true, window, 0,
+      0, 0, pieceCenter.x, pieceCenter.y,
+      false, false, false, false, 0, null);
+  piece.dispatchEvent(fakeMouseDown);
+
+  tileCenter = findCenter(tile);
+  fakeMouseUp = document.createEvent('MouseEvents');
+  fakeMouseUp.initMouseEvent('mouseup', true, true, window, 0,
+      0, 0, tileCenter.x, tileCenter.y,
+      false, false, false, false, 0, null);
+  tile.dispatchEvent(fakeMouseUp);
+}
+
 function makeMove() {
   var i, j, tiles, playables, piece, pieces, value, score, scores, best;
 
@@ -228,6 +260,8 @@ function makeMove() {
       }
     }
   }
+
+  fakeMove(best.piece, best.tile);
 
   console.log('Best move is:');
   console.log('Piece: ' + best.piece.innerHTML);
