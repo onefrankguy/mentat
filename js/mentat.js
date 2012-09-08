@@ -196,6 +196,7 @@ var dragDrop = {
     dragDrop.initialMouseY = e.clientY;
     document.addEventListener("mousemove", dragDrop.dragMouse, false);
     document.addEventListener("mouseup", dragDrop.releaseElement, false);
+    addClass(dragDrop.draggedObject, 'dragging');
     return false;
   },
 
@@ -229,6 +230,7 @@ var dragDrop = {
     var under = null;
     document.removeEventListener("mousemove", dragDrop.dragMouse, false);
     document.removeEventListener("mouseup", dragDrop.releaseElement, false);
+    removeClass(dragDrop.draggedObject, 'dragging');
     dragDrop.draggedObject.style.display = 'none';
     under = document.elementFromPoint(e.clientX, e.clientY);
     if (isPlayable(under)) {

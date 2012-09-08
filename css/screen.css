@@ -76,6 +76,9 @@ li {
 li:hover {
   z-index: 1;
 }
+.dragging {
+  z-index: 1;
+}
 .dropping {
   background: #ccc;
 }
