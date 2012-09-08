@@ -72,6 +72,10 @@ function bonusScore(values) {
 }
 
 function updateScore(element) {
+  setScore(guessScore(element));
+}
+
+function guessScore(element) {
   var i, j, value, values, score, classes, matches, total;
   score = getScore();
   classes = element.className.replace(/\s+/g, ' ').split(' ');
@@ -91,7 +95,7 @@ function updateScore(element) {
     score += countScore(total, 7);
     score += bonusScore(values);
   }
-  setScore(score);
+  return score;
 }
 
 var dragDrop = {
