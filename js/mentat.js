@@ -221,10 +221,10 @@ function makeMove() {
   best = { piece: undefined, tile: undefined, score: 0 };
   for (i = 0; i < pieces.length; i += 1) {
     value = parseInt(pieces[i].innerHTML);
-    for (j = 0; j < tiles.length; j += 1) {
-      score = guessScore(tiles[j], value);
+    for (j = 0; j < playables.length; j += 1) {
+      score = guessScore(playables[j], value);
       if (score >= best.score) {
-        best = { piece: pieces[i], tile: tiles[j], score: score };
+        best = { piece: pieces[i], tile: playables[j], score: score };
       }
     }
   }
