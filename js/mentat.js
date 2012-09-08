@@ -148,10 +148,12 @@ function isPlayable(element) {
 }
 
 function endTurn(piece, tile) {
-  tile.innerHTML = piece.innerHTML;
-  piece.parentNode.removeChild(piece);
-  updateScore(tile);
-  toggleTurn();
+  if (piece && tile) {
+    tile.innerHTML = piece.innerHTML;
+    piece.parentNode.removeChild(piece);
+    updateScore(tile);
+    toggleTurn();
+  }
 }
 
 var dragDrop = {
@@ -167,7 +169,7 @@ var dragDrop = {
       element = $(element);
     }
     if (element) {
-      if (currentPlayer === 1 || numberOfPlayers >= 2) {
+      if (currentPlayer === 1 || numberOfPlayers != 1) {
         addClass(element, 'playing');
       }
       element.addEventListener("mousedown", dragDrop.startDragMouse, false);
@@ -289,10 +291,12 @@ function makeMove() {
 
   fakeMove(best.piece, best.tile);
 
-  console.log('Best move is:');
-  console.log('Piece: ' + best.piece.innerHTML);
-  console.log('Tile: ' + best.tile.className);
-  console.log('Score: ' + best.score);
+  if (best.piece && best.tile) {
+    console.log('Best move is:');
+    console.log('Piece: ' + best.piece.innerHTML);
+    console.log('Tile: ' + best.tile.className);
+    console.log('Score: ' + best.score);
+  }
 }
 
 function toggleTurn() {
@@ -304,7 +308,7 @@ function toggleTurn() {
   for (i = 0; i < 8; i += 1) {
     dragDrop.bind("piece" + currentPlayer + i);
   }
-  if (numberOfPlayers < 2 && currentPlayer === 2) {
+  if (numberOfPlayers === 0 || (numberOfPlayers === 1 && currentPlayer === 2)) {
     makeMove();
   }
 }
