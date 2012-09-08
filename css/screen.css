@@ -64,6 +64,7 @@ li {
   height: 2em;
   width: 2em;
   line-height: 2em;
+  color: transparent;
   border: 0.0625em solid #000;
 }
 .dropping {
@@ -71,6 +72,9 @@ li {
 }
 .moving {
   -webkit-transition: top 2s, left 2s;
+}
+.playing {
+  color: #000;
 }
 #player1 span, #player2 span {
   display: block;

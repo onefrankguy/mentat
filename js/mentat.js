@@ -167,8 +167,10 @@ var dragDrop = {
       element = $(element);
     }
     if (element) {
+      if (currentPlayer === 1 || numberOfPlayers >= 2) {
+        addClass(element, 'playing');
+      }
       element.addEventListener("mousedown", dragDrop.startDragMouse, false);
-      element.style.color = "#000";
       element.style.top = "0px";
       element.style.left = "0px";
     }
@@ -179,8 +181,10 @@ var dragDrop = {
       element = $(element);
     }
     if (element) {
+      if (numberOfPlayers >= 2) {
+        removeClass(element, 'playing');
+      }
       element.removeEventListener("mousedown", dragDrop.startDragMouse, false);
-      element.style.color = "#fff";
     }
   },
 
@@ -246,6 +250,7 @@ function fakeMove(piece, tile) {
   if (isPlayable(tile)) {
     pieceCenter = findCenter(piece);
     tileCenter = findCenter(tile);
+    addClass(piece, 'playing');
     animate(piece, 'moving', function () { endTurn(piece, tile); });
     piece.style.left = parseInt(piece.style.left) + (tileCenter.x - pieceCenter.x) + 'px';
     piece.style.top = parseInt(piece.style.top) + (tileCenter.y - pieceCenter.y) + 'px';
@@ -293,8 +298,7 @@ function makeMove() {
 function toggleTurn() {
   var i;
   for (i = 0; i < 8; i += 1) {
-    dragDrop.unbind("piece1" + i);
-    dragDrop.unbind("piece2" + i);
+    dragDrop.unbind("piece" + currentPlayer + i);
   }
   currentPlayer = (currentPlayer === 1) ? 2 : 1;
   for (i = 0; i < 8; i += 1) {
