@@ -1,9 +1,10 @@
 (function () {
 "use strict";
 
-var i, j, k, pieces, currentPlayer;
+var i, j, k, pieces, currentPlayer, singlePlayer;
 
 currentPlayer = 2;
+singlePlayer = true;
 
 function $(id) {
   return document.getElementById(id);
@@ -98,6 +99,10 @@ function guessScore(element) {
   return score;
 }
 
+function isPlayable(element) {
+  return element && element.nodeName === 'TD' && element.innerHTML === '';
+}
+
 var dragDrop = {
   initialMouseX: null,
   initialMouseY: null,
@@ -161,9 +166,7 @@ var dragDrop = {
     dragDrop.draggedObject.style.display = 'none';
     dragDrop.droppedObject = document.elementFromPoint(e.clientX, e.clientY);
     dragDrop.draggedObject.style.display = 'inline-block';
-    if (dragDrop.droppedObject &&
-        dragDrop.droppedObject.nodeName === 'TD' &&
-        dragDrop.droppedObject.innerHTML === '') {
+    if (isPlayable(dragDrop.droppedObject)) {
       dragDrop.droppedObject.style.background = "#ccc";
     }
     return false;
@@ -175,7 +178,7 @@ var dragDrop = {
     document.removeEventListener("mouseup", dragDrop.releaseElement, false);
     dragDrop.draggedObject.style.display = 'none';
     under = document.elementFromPoint(e.clientX, e.clientY);
-    if (under && under.nodeName === 'TD' && under.innerHTML === '') {
+    if (isPlayable(under)) {
       under.innerHTML = dragDrop.draggedObject.innerHTML;
       dragDrop.draggedObject.parentNode.removeChild(dragDrop.draggedObject);
       updateScore(under);
@@ -193,6 +196,36 @@ var dragDrop = {
   }
 }
 
+function makeMove() {
+  var i, tiles, playables, piece, values;
+
+  tiles = document.getElementsByTagName('td');
+  playables = [];
+  for (i = 0; i < tiles.length; i += 1) {
+    if (isPlayable(tiles[i])) {
+      playables.push(tiles[i]);
+    }
+  }
+
+  console.log("The AI can play in the following locations:");
+  for (i = 0; i < playables.length; i += 1) {
+    console.log("  " + playables[i].className);
+  }
+
+  values = [];
+  for (i = 0; i < 8; i += 1) {
+    piece = $("piece" + currentPlayer + i);
+    if (piece) {
+      values.push(parseInt(piece.innerHTML));
+    }
+  }
+
+  console.log("The AI can play the following pieces:");
+  for (i = 0; i < values.length; i += 1) {
+    console.log("  " + values[i]);
+  }
+}
+
 function toggleTurn() {
   var i;
   for (i = 0; i < 8; i += 1) {
@@ -202,6 +235,9 @@ function toggleTurn() {
   currentPlayer = (currentPlayer === 1) ? 2 : 1;
   for (i = 0; i < 8; i += 1) {
     dragDrop.bind("piece" + currentPlayer + i);
+  }
+  if (singlePlayer && currentPlayer === 2) {
+    makeMove();
   }
 }
 
