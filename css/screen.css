@@ -48,3 +48,6 @@ li {
 .dropping {
   background: #ccc;
 }
+.moving {
+  -webkit-transition: top 2s, left 2s;
+}

@@ -14,6 +14,19 @@ function html(id, text) {
   $(id).innerHTML = text;
 }
 
+function animate(element, klass, callback) {
+  var wrapper = function () {
+    var regex = new RegExp(' ' + klass, 'g');
+    if (callback) {
+      callback();
+    }
+    element.className = element.className.replace(regex, '');
+    element.removeEventListener('webkitTransitionEnd', wrapper, true);
+  };
+  element.addEventListener('webkitTransitionEnd', wrapper, true);
+  element.className += ' ' + klass;
+}
+
 function findCenter(element) {
   var x = 0, y = 0;
   if (element) {
@@ -120,6 +133,13 @@ function isPlayable(element) {
   return element && element.nodeName === 'TD' && element.innerHTML === '';
 }
 
+function endTurn(piece, tile) {
+  tile.innerHTML = piece.innerHTML;
+  piece.parentNode.removeChild(piece);
+  updateScore(tile);
+  toggleTurn();
+}
+
 var dragDrop = {
   initialMouseX: null,
   initialMouseY: null,
@@ -196,10 +216,7 @@ var dragDrop = {
     dragDrop.draggedObject.style.display = 'none';
     under = document.elementFromPoint(e.clientX, e.clientY);
     if (isPlayable(under)) {
-      under.innerHTML = dragDrop.draggedObject.innerHTML;
-      dragDrop.draggedObject.parentNode.removeChild(dragDrop.draggedObject);
-      updateScore(under);
-      toggleTurn();
+      endTurn(dragDrop.draggedObject, under);
     } else {
       dragDrop.draggedObject.style.display = 'inline-block';
       dragDrop.draggedObject.style.left = dragDrop.startX + "px";
@@ -214,21 +231,23 @@ var dragDrop = {
 }
 
 function fakeMove(piece, tile) {
-  var pieceCenter, tileCenter, fakeMouseDown, fakeMouseUp;
+  var pieceCenter, tileCenter, x, y;
 
-  pieceCenter = findCenter(piece);
-  fakeMouseDown = document.createEvent('MouseEvents');
-  fakeMouseDown.initMouseEvent('mousedown', true, true, window, 0,
-      0, 0, pieceCenter.x, pieceCenter.y,
-      false, false, false, false, 0, null);
-  piece.dispatchEvent(fakeMouseDown);
-
-  tileCenter = findCenter(tile);
-  fakeMouseUp = document.createEvent('MouseEvents');
-  fakeMouseUp.initMouseEvent('mouseup', true, true, window, 0,
-      0, 0, tileCenter.x, tileCenter.y,
-      false, false, false, false, 0, null);
-  tile.dispatchEvent(fakeMouseUp);
+  if (isPlayable(tile)) {
+    pieceCenter = findCenter(piece);
+    tileCenter = findCenter(tile);
+    x = parseInt(piece.style.left);
+    if (isNaN(x)) {
+      x = 0;
+    }
+    y = parseInt(piece.style.top);
+    if (isNaN(y)) {
+      y = 0;
+    }
+    animate(piece, 'moving', function () { endTurn(piece, tile); });
+    piece.style.left = x + (tileCenter.x - pieceCenter.x) + 'px';
+    piece.style.top = y + (tileCenter.y - pieceCenter.y) + 'px';
+  }
 }
 
 function makeMove() {
