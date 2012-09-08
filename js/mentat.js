@@ -149,7 +149,9 @@ var dragDrop = {
     dragDrop.draggedObject.style.display = 'none';
     dragDrop.droppedObject = document.elementFromPoint(e.clientX, e.clientY);
     dragDrop.draggedObject.style.display = 'inline-block';
-    if (dragDrop.droppedObject && dragDrop.droppedObject.nodeName === 'TD' && dragDrop.droppedObject.innerHTML === '') {
+    if (dragDrop.droppedObject &&
+        dragDrop.droppedObject.nodeName === 'TD' &&
+        dragDrop.droppedObject.innerHTML === '') {
       dragDrop.droppedObject.style.background = "#ccc";
     }
     return false;
