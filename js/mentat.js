@@ -61,7 +61,7 @@ function bonusScore(values) {
     }
   }
   /* a straight */
-  if (straight === 4) score += 4;
+  if (straight === 3) score += 4;
   /* a pair */
   if (unique === 3) score += 2;
   /* three of a kind */
