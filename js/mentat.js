@@ -155,6 +155,8 @@ var dragDrop = {
     if (element) {
       element.addEventListener("mousedown", dragDrop.startDragMouse, false);
       element.style.color = "#000";
+      element.style.top = "0px";
+      element.style.left = "0px";
     }
   },
 
@@ -180,12 +182,6 @@ var dragDrop = {
   startDrag: function (object) {
     if (dragDrop.draggedObjct) {
       dragDrop.releaseElement();
-    }
-    if (isNaN(parseInt(object.style.left))) {
-      object.style.left = "0px";
-    }
-    if (isNaN(parseInt(object.style.top))) {
-      object.style.top = "0px";
     }
     dragDrop.startX = parseInt(object.style.left);
     dragDrop.startY = parseInt(object.style.top);
@@ -231,22 +227,14 @@ var dragDrop = {
 }
 
 function fakeMove(piece, tile) {
-  var pieceCenter, tileCenter, x, y;
+  var pieceCenter, tileCenter;
 
   if (isPlayable(tile)) {
     pieceCenter = findCenter(piece);
     tileCenter = findCenter(tile);
-    x = parseInt(piece.style.left);
-    if (isNaN(x)) {
-      x = 0;
-    }
-    y = parseInt(piece.style.top);
-    if (isNaN(y)) {
-      y = 0;
-    }
     animate(piece, 'moving', function () { endTurn(piece, tile); });
-    piece.style.left = x + (tileCenter.x - pieceCenter.x) + 'px';
-    piece.style.top = y + (tileCenter.y - pieceCenter.y) + 'px';
+    piece.style.left = parseInt(piece.style.left) + (tileCenter.x - pieceCenter.x) + 'px';
+    piece.style.top = parseInt(piece.style.top) + (tileCenter.y - pieceCenter.y) + 'px';
   }
 }
 
