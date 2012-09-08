@@ -17,6 +17,14 @@ function countScore(total, factor) {
   return (total % factor === 0) ? total / factor : 0;
 }
 
+function getScore() {
+  return parseInt($('player' + currentPlayer + '-score').innerHTML);
+}
+
+function setScore(newScore) {
+  html('player' + currentPlayer + '-score', newScore);
+}
+
 function countUnique(array) {
   var i, keys;
   keys = {};
@@ -63,9 +71,9 @@ function bonusScore(values) {
   return score;
 }
 
-function updateScore(element, player) {
+function updateScore(element) {
   var i, j, value, values, score, classes, matches, total;
-  score = parseInt($('player' + player + '-score').innerHTML);
+  score = getScore();
   classes = element.className.replace(/\s+/g, ' ').split(' ');
   for (i = 0; i < classes.length; i += 1) {
     total = 0;
@@ -83,7 +91,7 @@ function updateScore(element, player) {
     score += countScore(total, 7);
     score += bonusScore(values);
   }
-  html('player' + player + '-score', score);
+  setScore(score);
 }
 
 var dragDrop = {
@@ -166,7 +174,7 @@ var dragDrop = {
     if (under && under.nodeName === 'TD' && under.innerHTML === '') {
       under.innerHTML = dragDrop.draggedObject.innerHTML;
       dragDrop.draggedObject.parentNode.removeChild(dragDrop.draggedObject);
-      updateScore(under, currentPlayer);
+      updateScore(under);
       toggleTurn();
     } else {
       dragDrop.draggedObject.style.display = 'inline-block';
