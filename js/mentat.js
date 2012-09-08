@@ -164,13 +164,13 @@ var dragDrop = {
     dragDrop.draggedObject.style.left = dragDrop.startX + dx + "px";
     dragDrop.draggedObject.style.top = dragDrop.startY + dy + "px";
     if (dragDrop.droppedObject) {
-      dragDrop.droppedObject.style.background = "#fff";
+      dragDrop.droppedObject.className = dragDrop.droppedObject.className.replace(/ dropping/g, '');
     }
     dragDrop.draggedObject.style.display = 'none';
     dragDrop.droppedObject = document.elementFromPoint(e.clientX, e.clientY);
     dragDrop.draggedObject.style.display = 'inline-block';
     if (isPlayable(dragDrop.droppedObject)) {
-      dragDrop.droppedObject.style.background = "#ccc";
+      dragDrop.droppedObject.className += ' dropping';
     }
     return false;
   },

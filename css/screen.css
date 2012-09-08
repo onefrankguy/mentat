@@ -45,3 +45,6 @@ li {
   line-height: 2em;
   border: 0.0625em solid #000;
 }
+.dropping {
+  background: #ccc;
+}
