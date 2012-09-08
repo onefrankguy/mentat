@@ -13,8 +13,29 @@
   -webkit-user-select: none;
 }
 body {
+  position: relative;
   width: 20em;
-  margin: 1em auto;
+  height: 30em;
+  margin: 0 auto;
+}
+h1 {
+  text-align: center;
+  margin: 0 auto;
+  padding: 0.5em 0 0.25em 0;
+  width: 33%;
+  font-size: 2em;
+}
+#player1, #player2 {
+  position: absolute;
+  top: 0;
+  width: 33%;
+  text-align: center;
+}
+#player1 {
+  left: 0;
+}
+#player2 {
+  right: 0;
 }
 table {
   margin: 1em auto;
@@ -50,4 +71,35 @@ li {
 }
 .moving {
   -webkit-transition: top 2s, left 2s;
+}
+#player1 span, #player2 span {
+  display: block;
+  margin: 0 auto;
+}
+.human-icon, .computer-icon {
+  padding: 0.5em 0;
+}
+.human-icon span:first-child {
+  height: 0.6em;
+  width: 0.6em;
+  border: 0.0625em solid #000;
+  border-radius: 0.5em;
+}
+.human-icon span:last-child {
+  height: 1em;
+  width: 0.75em;
+  border: 0.0625em solid #000;
+  border-radius: 0.5em 0.5em 0 0;
+}
+.computer-icon span:first-child {
+  height: 1em;
+  width: 1.5em;
+  border: 0.0625em solid #000;
+  border-radius: 0.125em;
+}
+.computer-icon span:last-child {
+  height: 0.6em;
+  width: 1.5em;
+  border: 0.0625em solid #000;
+  border-radius: 0.125em 0.125em 0 0;
 }
