@@ -76,7 +76,7 @@ function updateScore(element) {
   setScore(guessScore(element));
 }
 
-function guessScore(element) {
+function guessScore(element, guess) {
   var i, j, value, values, score, classes, matches, total;
   score = getScore();
   classes = element.className.replace(/\s+/g, ' ').split(' ');
@@ -86,6 +86,9 @@ function guessScore(element) {
     matches = document.getElementsByClassName(classes[i]);
     for (j = 0; j < matches.length; j += 1) {
       value = parseInt(matches[j].innerHTML);
+      if (guess && matches[j] === element) {
+        value = guess;
+      }
       if (!isNaN(value)) {
         values.push(value);
         total += value;
@@ -197,7 +200,7 @@ var dragDrop = {
 }
 
 function makeMove() {
-  var i, tiles, playables, piece, values;
+  var i, j, tiles, playables, piece, pieces, value, score, scores, best;
 
   tiles = document.getElementsByTagName('td');
   playables = [];
@@ -207,23 +210,29 @@ function makeMove() {
     }
   }
 
-  console.log("The AI can play in the following locations:");
-  for (i = 0; i < playables.length; i += 1) {
-    console.log("  " + playables[i].className);
-  }
-
-  values = [];
+  pieces = [];
   for (i = 0; i < 8; i += 1) {
     piece = $("piece" + currentPlayer + i);
     if (piece) {
-      values.push(parseInt(piece.innerHTML));
+      pieces.push(piece);
     }
   }
 
-  console.log("The AI can play the following pieces:");
-  for (i = 0; i < values.length; i += 1) {
-    console.log("  " + values[i]);
+  best = { piece: undefined, tile: undefined, score: 0 };
+  for (i = 0; i < pieces.length; i += 1) {
+    value = parseInt(pieces[i].innerHTML);
+    for (j = 0; j < tiles.length; j += 1) {
+      score = guessScore(tiles[j], value);
+      if (score >= best.score) {
+        best = { piece: pieces[i], tile: tiles[j], score: score };
+      }
+    }
   }
+
+  console.log('Best move is:');
+  console.log('Piece: ' + best.piece.innerHTML);
+  console.log('Tile: ' + best.tile.className);
+  console.log('Score: ' + best.score);
 }
 
 function toggleTurn() {
