@@ -1,10 +1,10 @@
 (function () {
 "use strict";
 
-var i, j, k, pieces, currentPlayer, singlePlayer;
+var i, j, k, pieces, currentPlayer, numberOfPlayers;
 
 currentPlayer = 2;
-singlePlayer = true;
+numberOfPlayers = 1;
 
 function $(id) {
   return document.getElementById(id);
@@ -286,7 +286,7 @@ function toggleTurn() {
   for (i = 0; i < 8; i += 1) {
     dragDrop.bind("piece" + currentPlayer + i);
   }
-  if (singlePlayer && currentPlayer === 2) {
+  if (numberOfPlayers < 2 && currentPlayer === 2) {
     makeMove();
   }
 }
