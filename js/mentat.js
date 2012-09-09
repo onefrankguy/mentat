@@ -162,15 +162,17 @@ function isPlayable(element) {
 }
 
 function fakeMove(piece, tile) {
-  var pieceCenter, tileCenter;
+  var dx, dy, pieceCenter, tileCenter;
 
   if (isPlayable(tile)) {
     pieceCenter = findCenter(piece);
     tileCenter = findCenter(tile);
     addClass(piece, 'playing');
     animate(piece, 'moving', function () { endTurn(piece, tile); });
-    piece.style.left = parseInt(piece.style.left, 10) + (tileCenter.x - pieceCenter.x) + 'px';
-    piece.style.top = parseInt(piece.style.top, 10) + (tileCenter.y - pieceCenter.y) + 'px';
+    dx = tileCenter.x - pieceCenter.x;
+    dy = tileCenter.y - pieceCenter.y;
+    piece.style.left = parseInt(piece.style.left, 10) + dx + 'px';
+    piece.style.top = parseInt(piece.style.top, 10) + dy + 'px';
   }
 }
 
