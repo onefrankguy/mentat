@@ -1,7 +1,7 @@
 (function () {
 "use strict";
 
-var i, j, k, pieces, currentPlayer, numberOfPlayers;
+var i, j, k, pieces, currentPlayer, numberOfPlayers, dragDrop;
 
 currentPlayer = 2;
 numberOfPlayers = 1;
@@ -60,7 +60,7 @@ function countScore(total, factor) {
 }
 
 function getScore() {
-  return parseInt($('player' + currentPlayer + '-score').innerHTML);
+  return parseInt($('player' + currentPlayer + '-score').innerHTML, 10);
 }
 
 function setScore(newScore) {
@@ -84,14 +84,20 @@ function bonusScore(values) {
   unique = countUnique(values);
   if (values.length <= 2) {
     /* a pair */
-    if (unique === 1) return 2;
+    if (unique === 1) {
+      return 2;
+    }
     return 0;
   }
   if (values.length <= 3) {
     /* a pair */
-    if (unique === 2) return 2;
+    if (unique === 2) {
+      return 2;
+    }
     /* three of a kind */
-    if (unique === 1) return 6;
+    if (unique === 1) {
+      return 6;
+    }
     return 0;
   }
   score = 0;
@@ -103,13 +109,21 @@ function bonusScore(values) {
     }
   }
   /* a straight */
-  if (straight === 3) score += 4;
+  if (straight === 3) {
+    score += 4;
+  }
   /* a pair */
-  if (unique === 3) score += 2;
+  if (unique === 3) {
+    score += 2;
+  }
   /* three of a kind */
-  if (unique === 2) score += 6;
+  if (unique === 2) {
+    score += 6;
+  }
   /* four of a kind */
-  if (unique === 1) score += 12;
+  if (unique === 1) {
+    score += 12;
+  }
   return score;
 }
 
@@ -126,7 +140,7 @@ function guessScore(element, guess) {
     values = [];
     matches = document.getElementsByClassName(classes[i]);
     for (j = 0; j < matches.length; j += 1) {
-      value = parseInt(matches[j].innerHTML);
+      value = parseInt(matches[j].innerHTML, 10);
       if (guess && matches[j] === element) {
         value = guess;
       }
@@ -156,7 +170,7 @@ function endTurn(piece, tile) {
   }
 }
 
-var dragDrop = {
+dragDrop = {
   initialMouseX: null,
   initialMouseY: null,
   startX: null,
@@ -169,7 +183,7 @@ var dragDrop = {
       element = $(element);
     }
     if (element) {
-      if (currentPlayer === 1 || numberOfPlayers != 1) {
+      if (currentPlayer === 1 || numberOfPlayers !== 1) {
         addClass(element, 'playing');
       }
       element.addEventListener("mousedown", dragDrop.startDragMouse, false);
@@ -204,14 +218,15 @@ var dragDrop = {
     if (dragDrop.draggedObjct) {
       dragDrop.releaseElement();
     }
-    dragDrop.startX = parseInt(object.style.left);
-    dragDrop.startY = parseInt(object.style.top);
+    dragDrop.startX = parseInt(object.style.left, 10);
+    dragDrop.startY = parseInt(object.style.top, 10);
     dragDrop.draggedObject = object;
   },
 
   dragMouse: function (e) {
-    var dx = e.clientX - dragDrop.initialMouseX;
-    var dy = e.clientY - dragDrop.initialMouseY;
+    var dx, dy;
+    dx = e.clientX - dragDrop.initialMouseX;
+    dy = e.clientY - dragDrop.initialMouseY;
     dragDrop.draggedObject.style.left = dragDrop.startX + dx + "px";
     dragDrop.draggedObject.style.top = dragDrop.startY + dy + "px";
     if (dragDrop.droppedObject) {
@@ -246,7 +261,7 @@ var dragDrop = {
     }
     dragDrop.droppedObject = null;
   }
-}
+};
 
 function fakeMove(piece, tile) {
   var pieceCenter, tileCenter;
@@ -256,8 +271,8 @@ function fakeMove(piece, tile) {
     tileCenter = findCenter(tile);
     addClass(piece, 'playing');
     animate(piece, 'moving', function () { endTurn(piece, tile); });
-    piece.style.left = parseInt(piece.style.left) + (tileCenter.x - pieceCenter.x) + 'px';
-    piece.style.top = parseInt(piece.style.top) + (tileCenter.y - pieceCenter.y) + 'px';
+    piece.style.left = parseInt(piece.style.left, 10) + (tileCenter.x - pieceCenter.x) + 'px';
+    piece.style.top = parseInt(piece.style.top, 10) + (tileCenter.y - pieceCenter.y) + 'px';
   }
 }
 
@@ -282,7 +297,7 @@ function makeMove() {
 
   best = { piece: undefined, tile: undefined, score: 0 };
   for (i = 0; i < pieces.length; i += 1) {
-    value = parseInt(pieces[i].innerHTML);
+    value = parseInt(pieces[i].innerHTML, 10);
     for (j = 0; j < playables.length; j += 1) {
       score = guessScore(playables[j], value);
       if (score >= best.score) {
