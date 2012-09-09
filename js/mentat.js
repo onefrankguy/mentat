@@ -127,10 +127,6 @@ function bonusScore(values) {
   return score;
 }
 
-function updateScore(element) {
-  setScore(guessScore(element));
-}
-
 function guessScore(element, guess) {
   var i, j, value, values, score, classes, matches, total;
   score = getScore();
@@ -155,6 +151,10 @@ function guessScore(element, guess) {
     score += bonusScore(values);
   }
   return score;
+}
+
+function updateScore(element) {
+  setScore(guessScore(element));
 }
 
 function isPlayable(element) {
