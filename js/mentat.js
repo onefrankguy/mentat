@@ -175,7 +175,7 @@ function fakeMove(piece, tile) {
 }
 
 function makeMove() {
-  var i, j, tiles, playables, piece, pieces, value, score, scores, best;
+  var i, j, tiles, playables, piece, pieces, value, score, best;
 
   tiles = document.getElementsByTagName('td');
   playables = [];
