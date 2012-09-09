@@ -161,6 +161,46 @@ function isPlayable(element) {
   return element && element.nodeName === 'TD' && element.innerHTML === '';
 }
 
+function makeMove() {
+  var i, j, tiles, playables, piece, pieces, value, score, scores, best;
+
+  tiles = document.getElementsByTagName('td');
+  playables = [];
+  for (i = 0; i < tiles.length; i += 1) {
+    if (isPlayable(tiles[i])) {
+      playables.push(tiles[i]);
+    }
+  }
+
+  pieces = [];
+  for (i = 0; i < 8; i += 1) {
+    piece = $("piece" + currentPlayer + i);
+    if (piece) {
+      pieces.push(piece);
+    }
+  }
+
+  best = { piece: undefined, tile: undefined, score: 0 };
+  for (i = 0; i < pieces.length; i += 1) {
+    value = parseInt(pieces[i].innerHTML, 10);
+    for (j = 0; j < playables.length; j += 1) {
+      score = guessScore(playables[j], value);
+      if (score >= best.score) {
+        best = { piece: pieces[i], tile: playables[j], score: score };
+      }
+    }
+  }
+
+  fakeMove(best.piece, best.tile);
+
+  if (best.piece && best.tile) {
+    console.log('Best move is:');
+    console.log('Piece: ' + best.piece.innerHTML);
+    console.log('Tile: ' + best.tile.className);
+    console.log('Score: ' + best.score);
+  }
+}
+
 function toggleTurn() {
   var i;
   for (i = 0; i < 8; i += 1) {
@@ -287,46 +327,6 @@ function fakeMove(piece, tile) {
     animate(piece, 'moving', function () { endTurn(piece, tile); });
     piece.style.left = parseInt(piece.style.left, 10) + (tileCenter.x - pieceCenter.x) + 'px';
     piece.style.top = parseInt(piece.style.top, 10) + (tileCenter.y - pieceCenter.y) + 'px';
-  }
-}
-
-function makeMove() {
-  var i, j, tiles, playables, piece, pieces, value, score, scores, best;
-
-  tiles = document.getElementsByTagName('td');
-  playables = [];
-  for (i = 0; i < tiles.length; i += 1) {
-    if (isPlayable(tiles[i])) {
-      playables.push(tiles[i]);
-    }
-  }
-
-  pieces = [];
-  for (i = 0; i < 8; i += 1) {
-    piece = $("piece" + currentPlayer + i);
-    if (piece) {
-      pieces.push(piece);
-    }
-  }
-
-  best = { piece: undefined, tile: undefined, score: 0 };
-  for (i = 0; i < pieces.length; i += 1) {
-    value = parseInt(pieces[i].innerHTML, 10);
-    for (j = 0; j < playables.length; j += 1) {
-      score = guessScore(playables[j], value);
-      if (score >= best.score) {
-        best = { piece: pieces[i], tile: playables[j], score: score };
-      }
-    }
-  }
-
-  fakeMove(best.piece, best.tile);
-
-  if (best.piece && best.tile) {
-    console.log('Best move is:');
-    console.log('Piece: ' + best.piece.innerHTML);
-    console.log('Tile: ' + best.tile.className);
-    console.log('Score: ' + best.score);
   }
 }
 
