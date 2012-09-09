@@ -1,3 +1,24 @@
+/*
+http://ethanschoonover.com/solarized
+
+base03:    #002b36;
+base02:    #073642;
+base01:    #586e75;
+base00:    #657b83;
+base0:     #839496;
+base1:     #93a1a1;
+base2:     #eee8d5;
+base3:     #fdf6e3;
+yellow:    #b58900;
+orange:    #cb4b16;
+red:       #dc322f;
+magenta:   #d33682;
+violet:    #6c71c4;
+blue:      #268bd2;
+cyan:      #2aa198;
+green:     #859900;
+*/
+
 * {
   vertical-align: baseline;
   font-weight: inherit;
@@ -8,7 +29,7 @@
   outline: 0;
   padding: 0;
   margin: 0;
-  background: #fff;
+  background: transparent;
   cursor: default;
   -webkit-user-select: none;
 }
@@ -17,6 +38,8 @@ body {
   width: 20em;
   height: 30em;
   margin: 0 auto;
+  background: #fdf6e3;
+  color: #586e75;
 }
 h1 {
   text-align: center;
@@ -40,16 +63,16 @@ h1 {
 table {
   margin: 1em auto;
   border-spacing: 0;
-  border-bottom: 0.0625em solid #000;
-  border-right: 0.0625em solid #000;
+  border-bottom: 0.0625em solid #586e75;
+  border-right: 0.0625em solid #586e75;
 }
 td {
   text-align: center;
   width: 4em;
   height: 4em;
   line-height: 4em;
-  border-left: 0.0625em solid #000;
-  border-top: 0.0625em solid #000;
+  border-left: 0.0625em solid #586e75;
+  border-top: 0.0625em solid #586e75;
 }
 ul {
   display: block;
@@ -67,27 +90,41 @@ li {
   line-height: 2.5em;
   font-weight: bold;
   color: transparent;
-  border: 0.25em dotted #fff;
-  background: #92ed40;
+  border: 0.25em dotted #eee8d5;
   border-radius: 2.5em;
-  box-shadow: inset 0 0 0.0625em 0.0625em rgba(0,0,0, 0.2), 0 0 0.125em 0.0625em rgba(60,60,60, 0.5), inset 0 2.5em 0.0625em rgba(255,255,255, 0.9);
+  box-shadow: inset 0 0 0.0625em 0.0625em rgba(88,110,117,1), 0 0 0.125em 0.0625em rgba(131,148,150,1), inset 0 2.5em 0.0625em rgba(238,232,213,1);
   margin-left: -1em;
 }
 li:hover {
   z-index: 1;
 }
+.green {
+  background: #859900;
+}
+.magenta {
+  background: #d33682;
+}
+.cyan {
+  background: #2aa198;
+}
+.orange {
+  background: #cb4b16;
+}
+.yellow {
+  background: #b58900;
+}
 .dragging {
   z-index: 1;
 }
 .dropping {
-  background: #ccc;
+  background: #eee8d5;
 }
 .moving {
   -webkit-transition: top 2s, left 2s;
   z-index: 1;
 }
 .playing {
-  color: #000;
+  color: #586e75;
 }
 #player1 span, #player2 span {
   display: block;
@@ -99,24 +136,25 @@ li:hover {
 .human-icon span:first-child {
   height: 0.6em;
   width: 0.6em;
-  border: 0.0625em solid #000;
+  border: 0.0625em solid #586e75;
   border-radius: 0.5em;
 }
 .human-icon span:last-child {
   height: 1em;
   width: 0.75em;
-  border: 0.0625em solid #000;
+  border: 0.0625em solid #586e75;
   border-radius: 0.5em 0.5em 0 0;
 }
 .computer-icon span:first-child {
   height: 1em;
   width: 1.5em;
-  border: 0.0625em solid #000;
   border-radius: 0.125em;
+  border: 0.125em solid transparent;
+  box-shadow: 0 0 0 0.0625em rgba(88,110,117,1), inset 0 0 0 0.0625em rgba(88,110,117,1), inset 0 1em 0 0.0625em rgba(238,232,213,1);
 }
 .computer-icon span:last-child {
   height: 0.6em;
   width: 1.5em;
-  border: 0.0625em solid #000;
+  border: 0.0625em solid #586e75;
   border-radius: 0.125em 0.125em 0 0;
 }
