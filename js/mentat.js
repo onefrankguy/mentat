@@ -1,7 +1,7 @@
 (function () {
 "use strict";
 
-var i, j, k, pieces, currentPlayer, numberOfPlayers, dragDrop;
+var i, j, k, pieces, currentPlayer, numberOfPlayers, dragDrop, endTurn;
 
 currentPlayer = 2;
 numberOfPlayers = 1;
@@ -161,6 +161,19 @@ function isPlayable(element) {
   return element && element.nodeName === 'TD' && element.innerHTML === '';
 }
 
+function fakeMove(piece, tile) {
+  var pieceCenter, tileCenter;
+
+  if (isPlayable(tile)) {
+    pieceCenter = findCenter(piece);
+    tileCenter = findCenter(tile);
+    addClass(piece, 'playing');
+    animate(piece, 'moving', function () { endTurn(piece, tile); });
+    piece.style.left = parseInt(piece.style.left, 10) + (tileCenter.x - pieceCenter.x) + 'px';
+    piece.style.top = parseInt(piece.style.top, 10) + (tileCenter.y - pieceCenter.y) + 'px';
+  }
+}
+
 function makeMove() {
   var i, j, tiles, playables, piece, pieces, value, score, scores, best;
 
@@ -215,14 +228,14 @@ function toggleTurn() {
   }
 }
 
-function endTurn(piece, tile) {
+endTurn = function(piece, tile) {
   if (piece && tile) {
     tile.innerHTML = piece.innerHTML;
     piece.parentNode.removeChild(piece);
     updateScore(tile);
     toggleTurn();
   }
-}
+};
 
 dragDrop = {
   initialMouseX: null,
@@ -316,19 +329,6 @@ dragDrop = {
     dragDrop.droppedObject = null;
   }
 };
-
-function fakeMove(piece, tile) {
-  var pieceCenter, tileCenter;
-
-  if (isPlayable(tile)) {
-    pieceCenter = findCenter(piece);
-    tileCenter = findCenter(tile);
-    addClass(piece, 'playing');
-    animate(piece, 'moving', function () { endTurn(piece, tile); });
-    piece.style.left = parseInt(piece.style.left, 10) + (tileCenter.x - pieceCenter.x) + 'px';
-    piece.style.top = parseInt(piece.style.top, 10) + (tileCenter.y - pieceCenter.y) + 'px';
-  }
-}
 
 function shuffle(array) {
   var i, j, temp;
