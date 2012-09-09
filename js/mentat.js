@@ -161,6 +161,20 @@ function isPlayable(element) {
   return element && element.nodeName === 'TD' && element.innerHTML === '';
 }
 
+function toggleTurn() {
+  var i;
+  for (i = 0; i < 8; i += 1) {
+    dragDrop.unbind("piece" + currentPlayer + i);
+  }
+  currentPlayer = (currentPlayer === 1) ? 2 : 1;
+  for (i = 0; i < 8; i += 1) {
+    dragDrop.bind("piece" + currentPlayer + i);
+  }
+  if (numberOfPlayers === 0 || (numberOfPlayers === 1 && currentPlayer === 2)) {
+    makeMove();
+  }
+}
+
 function endTurn(piece, tile) {
   if (piece && tile) {
     tile.innerHTML = piece.innerHTML;
@@ -313,20 +327,6 @@ function makeMove() {
     console.log('Piece: ' + best.piece.innerHTML);
     console.log('Tile: ' + best.tile.className);
     console.log('Score: ' + best.score);
-  }
-}
-
-function toggleTurn() {
-  var i;
-  for (i = 0; i < 8; i += 1) {
-    dragDrop.unbind("piece" + currentPlayer + i);
-  }
-  currentPlayer = (currentPlayer === 1) ? 2 : 1;
-  for (i = 0; i < 8; i += 1) {
-    dragDrop.bind("piece" + currentPlayer + i);
-  }
-  if (numberOfPlayers === 0 || (numberOfPlayers === 1 && currentPlayer === 2)) {
-    makeMove();
   }
 }
 
