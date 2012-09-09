@@ -82,7 +82,7 @@ ul {
   list-style: none;
   padding-left: 1em;
 }
-li {
+li, .piece {
   position: relative;
   display: inline-block;
   height: 2.5em;
@@ -97,6 +97,9 @@ li {
 }
 li:hover {
   z-index: 1;
+}
+.piece {
+  margin: 0 auto;
 }
 .green {
   background: #859900;

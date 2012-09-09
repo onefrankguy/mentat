@@ -136,7 +136,7 @@ function guessScore(element, guess) {
     values = [];
     matches = document.getElementsByClassName(classes[i]);
     for (j = 0; j < matches.length; j += 1) {
-      value = parseInt(matches[j].innerHTML, 10);
+      value = parseInt(matches[j].getAttribute('data-value'), 10);
       if (guess && matches[j] === element) {
         value = guess;
       }
@@ -231,8 +231,14 @@ function toggleTurn() {
 }
 
 endTurn = function(piece, tile) {
+  var element;
   if (piece && tile) {
-    tile.innerHTML = piece.innerHTML;
+    console.log('Class: ' + piece.className);
+    element = '<span class="';
+    element += piece.className.replace(/moving/g, '');
+    element += ' piece">' + piece.innerHTML + '</span>';
+    tile.setAttribute('data-value', piece.innerHTML);
+    tile.innerHTML = element;
     piece.parentNode.removeChild(piece);
     updateScore(tile);
     toggleTurn();
