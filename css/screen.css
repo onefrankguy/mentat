@@ -62,17 +62,21 @@ h1 {
 }
 table {
   margin: 1em auto;
-  border-spacing: 0;
-  border-bottom: 0.0625em solid #586e75;
-  border-right: 0.0625em solid #586e75;
+  border-spacing: 1;
+  border: 0.0625em solid #586e75;
+  border-radius: 0.5em;
+  padding: 0.25em;
+  background: #93a1a1;
 }
 td {
   text-align: center;
   width: 4em;
   height: 4em;
   line-height: 4em;
-  border-left: 0.0625em solid #586e75;
-  border-top: 0.0625em solid #586e75;
+  border: 0.0625em solid #586e75;
+  border-radius: 0.25em;
+  background: #eee8d5;
+  box-shadow: inset 0 0 0.5em 0 rgba(101,123,131,1);
 }
 ul {
   display: block;
@@ -121,6 +125,7 @@ li:hover {
 }
 .dropping {
   background: #eee8d5;
+  box-shadow: inset 0 0 0.5em 0.125em rgba(42,161,152,1);
 }
 .moving {
   -webkit-transition: top 2s, left 2s;
