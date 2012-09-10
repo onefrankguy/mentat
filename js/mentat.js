@@ -36,8 +36,10 @@ function animate(element, klass, callback) {
     }
     removeClass(element, klass);
     element.removeEventListener('webkitTransitionEnd', wrapper, true);
+    element.removeEventListener('otransitionend', wrapper, true);
   };
   element.addEventListener('webkitTransitionEnd', wrapper, true);
+  element.addEventListener('otransitionend', wrapper, true);
   addClass(element, klass);
 }
 
