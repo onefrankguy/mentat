@@ -110,6 +110,13 @@ var jQuery = (function (doc) {
     }
   };
 
+  fn.prototype.name = function () {
+    if (this.element) {
+      return this.element.nodeName;
+    }
+    return '';
+  };
+
   fn.prototype.unwrap = function () {
     return this.element;
   };

@@ -109,7 +109,8 @@ function updateScore(element) {
 }
 
 function isPlayable(element) {
-  return element && element.nodeName === 'TD' && $(element).html() === '';
+  element = $(element);
+  return element.name() === 'TD' && element.html() === '';
 }
 
 function fakeMove(piece, tile) {
