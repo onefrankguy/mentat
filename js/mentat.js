@@ -109,6 +109,20 @@ function isPlayable(element) {
   return element.name() === 'TD' && element.html() === '';
 }
 
+function getPieces(player) {
+  if (player === undefined) {
+    player = currentPlayer;
+  }
+  return $('player' + player + '-pieces').kids('li');
+}
+
+function initPieces(player, values) {
+  var i, pieces = getPieces(player);
+  for (i = 0; i < pieces.length; i += 1) {
+    $(pieces[i]).html(values.shift());
+  }
+}
+
 function fakeMove(piece, tile) {
   if (isPlayable(tile)) {
     piece = $(piece);
@@ -131,13 +145,7 @@ function makeMove() {
     }
   }
 
-  pieces = [];
-  for (i = 0; i < 8; i += 1) {
-    piece = $("piece" + currentPlayer + i).unwrap();
-    if (piece) {
-      pieces.push(piece);
-    }
-  }
+  pieces = getPieces();
 
   best = { piece: undefined, tile: undefined, score: 0 };
   for (i = 0; i < pieces.length; i += 1) {
@@ -161,22 +169,26 @@ function makeMove() {
 }
 
 function toggleTurn() {
-  var i, element;
-  for (i = 0; i < 8; i += 1) {
-    element = "piece" + currentPlayer + i;
-    DragDrop.unbind(element);
+  var i, pieces;
+
+  pieces = getPieces();
+  for (i = 0; i < pieces.length; i += 1) {
+    DragDrop.unbind(pieces[i]);
     if (numberOfPlayers >= 2) {
-      $(element).remove('playing');
+      $(pieces[i]).remove('playing');
     }
   }
+
   currentPlayer = (currentPlayer === 1) ? 2 : 1;
-  for (i = 0; i < 8; i += 1) {
-    element = "piece" + currentPlayer + i;
-    DragDrop.bind(element, isPlayable, endTurn);
+
+  pieces = getPieces();
+  for (i = 0; i < pieces.length; i += 1) {
+    DragDrop.bind(pieces[i], isPlayable, endTurn);
     if (currentPlayer === 1 || numberOfPlayers !== 1) {
-      $(element).add('playing');
+      $(pieces[i]).add('playing');
     }
   }
+
   if (numberOfPlayers === 0 || (numberOfPlayers === 1 && currentPlayer === 2)) {
     makeMove();
   }
@@ -211,15 +223,8 @@ for (i = 0; i < 4; i += 1) {
 }
 shuffle(pieces);
 
-for (i = 0, j = 0, k = 0; i < 16; i += 1) {
-  if (i % 2 === 0) {
-    $("piece1" + j).html(pieces[i]);
-    j += 1;
-  } else {
-    $("piece2" + k).html(pieces[i]);
-    k += 1;
-  }
-}
+initPieces(1, pieces);
+initPieces(2, pieces);
 
 toggleTurn();
 

@@ -143,6 +143,13 @@ var jQuery = (function (doc) {
     }
   };
 
+  fn.prototype.kids = function (value) {
+    if (this.element) {
+      return this.element.getElementsByTagName(value);
+    }
+    return [];
+  };
+
   fn.prototype.unwrap = function () {
     return this.element;
   };
