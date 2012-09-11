@@ -48,10 +48,14 @@ var jQuery = (function (doc) {
     return this;
   };
 
+  fn.prototype.int = function () {
+    return parseInt(this.html(), 10);
+  };
+
   fn.prototype.top = function (value) {
     if (this.element) {
       if (value === undefined) {
-        return parseInt(this.element.style.top);
+        return parseInt(this.element.style.top, 10);
       }
       this.element.style.top = value + 'px';
     }
@@ -60,7 +64,7 @@ var jQuery = (function (doc) {
   fn.prototype.left = function (value) {
     if (this.element) {
       if (value === undefined) {
-        return parseInt(this.element.style.left);
+        return parseInt(this.element.style.left, 10);
       }
       this.element.style.left = value + 'px';
     }

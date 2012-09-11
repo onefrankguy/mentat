@@ -11,7 +11,7 @@ function countScore(total, factor) {
 }
 
 function getScore() {
-  return parseInt($('#player' + currentPlayer + '-score').html(), 10);
+  return $('#player' + currentPlayer + '-score').int();
 }
 
 function setScore(newScore) {
@@ -150,7 +150,7 @@ function makeMove() {
 
   best = { piece: undefined, tile: undefined, score: 0 };
   for (i = 0; i < pieces.length; i += 1) {
-    value = parseInt($(pieces[i]).html(), 10);
+    value = $(pieces[i]).int();
     for (j = 0; j < playables.length; j += 1) {
       score = guessScore(playables[j], value);
       if (score >= best.score) {
