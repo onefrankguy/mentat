@@ -93,6 +93,23 @@ var jQuery = (function (doc) {
     return { x: x, y: y };
   };
 
+  fn.prototype.animate = function (klass, callback) {
+    var self = this;
+    if (this.element) {
+      var wrapper = function () {
+        self.ignore('webkitTransitionEnd', wrapper);
+        self.ignore('otransitionend', wrapper);
+        self.remove(klass);
+        if (callback) {
+          callback();
+        }
+      };
+      this.listen('webkitTransitionEnd', wrapper);
+      this.listen('otransitionend', wrapper);
+      this.add(klass);
+    }
+  };
+
   fn.prototype.unwrap = function () {
     return this.element;
   };

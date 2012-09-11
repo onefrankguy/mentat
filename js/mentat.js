@@ -6,21 +6,6 @@ var i, j, k, pieces, currentPlayer, numberOfPlayers, endTurn;
 currentPlayer = 2;
 numberOfPlayers = 1;
 
-function animate(element, klass, callback) {
-  element = $(element);
-  var wrapper = function () {
-    if (callback) {
-      callback();
-    }
-    element.remove(klass);
-    element.ignore('webkitTransitionEnd', wrapper);
-    element.ignore('otransitionend', wrapper);
-  };
-  element.listen('webkitTransitionEnd', wrapper);
-  element.listen('otransitionend', wrapper);
-  element.add(klass);
-}
-
 function countScore(total, factor) {
   return (total % factor === 0) ? total / factor : 0;
 }
@@ -132,8 +117,7 @@ function fakeMove(piece, tile) {
     piece = $(piece);
     tile = $(tile);
     piece.add('playing');
-    animate(piece, 'moving', function () {
-      piece.remove('moving');
+    piece.animate('moving', function () {
       endTurn(piece.unwrap(), tile.unwrap());
     });
     piece.left(piece.left() + (tile.center().x - piece.center().x));
