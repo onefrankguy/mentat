@@ -79,6 +79,20 @@ var jQuery = (function (doc) {
     }
   };
 
+  fn.prototype.center = function () {
+    var e = this.element, x = 0, y = 0;
+    if (e) {
+      x = e.offsetWidth / 2;
+      y = e.offsetHeight / 2;
+    }
+    while (e && !isNaN(e.offsetLeft) && !isNaN(e.offsetTop)) {
+      x += e.offsetLeft - e.scrollLeft;
+      y += e.offsetTop - e.scrollTop;
+      e = e.offsetParent;
+    }
+    return { x: x, y: y };
+  };
+
   fn.prototype.unwrap = function () {
     return this.element;
   };

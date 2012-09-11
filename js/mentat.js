@@ -21,20 +21,6 @@ function animate(element, klass, callback) {
   element.add(klass);
 }
 
-function findCenter(element) {
-  var x = 0, y = 0;
-  if (element) {
-    x = element.offsetWidth / 2;
-    y = element.offsetHeight / 2;
-  }
-  while (element && !isNaN(element.offsetLeft) && !isNaN(element.offsetTop)) {
-    x += element.offsetLeft - element.scrollLeft;
-    y += element.offsetTop - element.scrollTop;
-    element = element.offsetParent;
-  }
-  return { x: x, y: y };
-}
-
 function countScore(total, factor) {
   return (total % factor === 0) ? total / factor : 0;
 }
@@ -145,8 +131,8 @@ function fakeMove(piece, tile) {
   var dx, dy, pieceCenter, tileCenter;
 
   if (isPlayable(tile)) {
-    pieceCenter = findCenter(piece);
-    tileCenter = findCenter(tile);
+    pieceCenter = $(piece).center();
+    tileCenter = $(tile).center();
     $(piece).add('playing');
     animate(piece, 'moving', function () { endTurn(piece, tile); });
     dx = tileCenter.x - pieceCenter.x;
