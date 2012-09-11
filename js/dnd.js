@@ -24,8 +24,8 @@ var DragDrop = (function ($, doc) {
       }
 
     , onStop = function (e) {
-        doc.ignore('mouseup', onStop);
-        doc.ignore('mousemove', onMove);
+        doc.off('mouseup', onStop);
+        doc.off('mousemove', onMove);
         dragged.remove('dragging');
         dragged.display('none');
         dropped = $.fromPoint(e.clientX, e.clientY);
@@ -52,14 +52,14 @@ var DragDrop = (function ($, doc) {
         startY = dragged.top();
         initialX = e.clientX;
         initialY = e.clientY;
-        doc.listen('mousemove', onMove);
-        doc.listen('mouseup', onStop);
+        doc.on('mousemove', onMove);
+        doc.on('mouseup', onStop);
         return false;
       }
 
     , bind = function (element, check, done) {
         element = $(element);
-        element.listen('mousedown', onStart);
+        element.on('mousedown', onStart);
         element.left(0);
         element.top(0);
         droppable = check;
@@ -67,7 +67,7 @@ var DragDrop = (function ($, doc) {
       }
 
     , unbind = function (element) {
-        $(element).ignore('mousedown', onStart);
+        $(element).off('mousedown', onStart);
       }
     ;
 

@@ -92,13 +92,13 @@ var jQuery = (function (doc) {
     }
   };
 
-  Fn.prototype.listen = function (message, callback) {
+  Fn.prototype.on = function (message, callback) {
     if (this.element) {
       this.element.addEventListener(message, callback, false);
     }
   };
 
-  Fn.prototype.ignore = function (message, callback) {
+  Fn.prototype.off = function (message, callback) {
     if (this.element) {
       this.element.removeEventListener(message, callback, false);
     }
@@ -122,15 +122,15 @@ var jQuery = (function (doc) {
     var wrapper, self = this;
     if (this.element) {
       wrapper = function () {
-        self.ignore('webkitTransitionEnd', wrapper);
-        self.ignore('otransitionend', wrapper);
+        self.off('webkitTransitionEnd', wrapper);
+        self.off('otransitionend', wrapper);
         self.remove(klass);
         if (callback) {
           callback();
         }
       };
-      this.listen('webkitTransitionEnd', wrapper);
-      this.listen('otransitionend', wrapper);
+      this.on('webkitTransitionEnd', wrapper);
+      this.on('otransitionend', wrapper);
       this.add(klass);
     }
   };
