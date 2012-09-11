@@ -2,12 +2,30 @@ var jQuery = (function (doc) {
   "use strict";
 
   var fn = function (selector) {
+    var i, nodes, results = [];
     if (selector instanceof fn) {
       return selector;
     }
     this.element = selector;
     if (typeof selector === 'string') {
-      this.element = document.getElementById(selector);
+      if (selector.indexOf('#') === 0) {
+        this.element = document.getElementById(selector.slice(1));
+      }
+      if (selector.indexOf('.') === 0) {
+        nodes = doc.getElementsByClassName(selector.slice(1));
+        for (i = 0; i < nodes.length; i += 1) {
+          results.push(new fn(nodes[i]));
+        }
+        return results;
+      }
+      if (selector.indexOf('<') === 0) {
+        selector = selector.slice(1, -1);
+        nodes = doc.getElementsByTagName(selector);
+        for (i = 0; i < nodes.length; i += 1) {
+          results.push(new fn(nodes[i]));
+        }
+        return results;
+      }
     }
     return this;
   },
@@ -18,14 +36,6 @@ var jQuery = (function (doc) {
 
   root.fromPoint = function (x, y) {
     return root(doc.elementFromPoint(x, y));
-  };
-
-  root.findClasses = function (klass) {
-    var i, results  = [], nodes = doc.getElementsByClassName(klass);
-    for (i = 0; i < nodes.length; i += 1) {
-      results.push(root(nodes[i]));
-    }
-    return results;
   };
 
   fn.prototype.html = function (value) {

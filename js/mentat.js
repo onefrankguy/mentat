@@ -11,11 +11,11 @@ function countScore(total, factor) {
 }
 
 function getScore() {
-  return parseInt($('player' + currentPlayer + '-score').html(), 10);
+  return parseInt($('#player' + currentPlayer + '-score').html(), 10);
 }
 
 function setScore(newScore) {
-  $('player' + currentPlayer + '-score').html(newScore);
+  $('#player' + currentPlayer + '-score').html(newScore);
 }
 
 function countUnique(array) {
@@ -86,7 +86,7 @@ function guessScore(element, guess) {
   for (i = 0; i < classes.length; i += 1) {
     total = 0;
     values = [];
-    matches = $.findClasses(classes[i]);
+    matches = $('.' + classes[i]);
     for (j = 0; j < matches.length; j += 1) {
       value = matches[j].data();
       if (guess && matches[j].klass() === element.klass()) {
@@ -114,7 +114,7 @@ function getPieces(player) {
   if (player === undefined) {
     player = currentPlayer;
   }
-  return $('player' + player + '-pieces').kids('li');
+  return $('#player' + player + '-pieces').kids('li');
 }
 
 function initPieces(player, values) {
@@ -138,7 +138,7 @@ function fakeMove(piece, tile) {
 function makeMove() {
   var i, j, tiles, playables, piece, pieces, value, score, best;
 
-  tiles = document.getElementsByTagName('td');
+  tiles = $('<td>');
   playables = [];
   for (i = 0; i < tiles.length; i += 1) {
     if (isPlayable(tiles[i])) {
