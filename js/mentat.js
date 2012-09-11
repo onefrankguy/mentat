@@ -1,232 +1,239 @@
 (function ($) {
-"use strict";
+  "use strict";
 
-var i, j, k, pieces, currentPlayer, numberOfPlayers, endTurn;
+  var i = 0
+    , j = 0
+    , k = 0
+    , pieces = []
+    , currentPlayer = 2
+    , numberOfPlayers = 1
 
-currentPlayer = 2;
-numberOfPlayers = 1;
-
-function countScore(total, factor) {
-  return (total % factor === 0) ? total / factor : 0;
-}
-
-function getScore() {
-  return $('#player' + currentPlayer + '-score').int();
-}
-
-function setScore(newScore) {
-  $('#player' + currentPlayer + '-score').html(newScore);
-}
-
-function countUnique(array) {
-  var i, keys;
-  keys = {};
-  for (i = 0; i < array.length; i += 1) {
-    keys[array[i]] = 1;
-  }
-  return Object.keys(keys).length;
-}
-
-function bonusScore(values) {
-  var i, score, straight, unique;
-  if (values.length <= 1) {
-    return 0;
-  }
-  unique = countUnique(values);
-  if (values.length <= 2) {
-    /* a pair */
-    if (unique === 1) {
-      return 2;
-    }
-    return 0;
-  }
-  if (values.length <= 3) {
-    /* a pair */
-    if (unique === 2) {
-      return 2;
-    }
-    /* three of a kind */
-    if (unique === 1) {
-      return 6;
-    }
-    return 0;
-  }
-  score = 0;
-  straight = 0;
-  values.sort();
-  for (i = 0; i < values.length - 1; i += 1) {
-    if (values[i] + 1 === values[i + 1]) {
-      straight += 1;
-    }
-  }
-  /* a straight */
-  if (straight === 3) {
-    score += 4;
-  }
-  /* a pair */
-  if (unique === 3) {
-    score += 2;
-  }
-  /* three of a kind */
-  if (unique === 2) {
-    score += 6;
-  }
-  /* four of a kind */
-  if (unique === 1) {
-    score += 12;
-  }
-  return score;
-}
-
-function guessScore(element, guess) {
-  var i, j, value, values, score, classes, matches, total;
-  element = $(element);
-  score = getScore();
-  classes = element.klass().replace(/\s+/g, ' ').split(' ');
-  for (i = 0; i < classes.length; i += 1) {
-    total = 0;
-    values = [];
-    matches = $('.' + classes[i]);
-    for (j = 0; j < matches.length; j += 1) {
-      value = matches[j].data();
-      if (guess && matches[j].klass() === element.klass()) {
-        value = guess;
+    , countScore = function (total, factor) {
+        return (total % factor === 0) ? total / factor : 0;
       }
-      if (!isNaN(value)) {
-        values.push(value);
-        total += value;
+
+    , getScore = function () {
+        return $('#player' + currentPlayer + '-score').int();
       }
-    }
-    score += countScore(total, 3);
-    score += countScore(total, 5);
-    score += countScore(total, 7);
-    score += bonusScore(values);
-  }
-  return score;
-}
 
-function isPlayable(element) {
-  element = $(element);
-  return element.name() === 'TD' && element.html() === '';
-}
-
-function getPieces(player) {
-  if (player === undefined) {
-    player = currentPlayer;
-  }
-  return $('#player' + player + '-pieces').kids('li');
-}
-
-function initPieces(player, values) {
-  var i, pieces = getPieces(player);
-  for (i = 0; i < pieces.length; i += 1) {
-    $(pieces[i]).html(values.shift());
-  }
-}
-
-function fakeMove(piece, tile) {
-  if (isPlayable(tile)) {
-    piece = $(piece);
-    tile = $(tile);
-    piece.add('playing');
-    piece.animate('moving', function () { endTurn(piece, tile); });
-    piece.left(piece.left() + (tile.center().x - piece.center().x));
-    piece.top(piece.top() + (tile.center().y - piece.center().y));
-  }
-}
-
-function makeMove() {
-  var i, j, tiles, playables, piece, pieces, value, score, best;
-
-  tiles = $('<td>');
-  playables = [];
-  for (i = 0; i < tiles.length; i += 1) {
-    if (isPlayable(tiles[i])) {
-      playables.push(tiles[i]);
-    }
-  }
-
-  pieces = getPieces();
-
-  best = { piece: undefined, tile: undefined, score: 0 };
-  for (i = 0; i < pieces.length; i += 1) {
-    value = $(pieces[i]).int();
-    for (j = 0; j < playables.length; j += 1) {
-      score = guessScore(playables[j], value);
-      if (score >= best.score) {
-        best = { piece: pieces[i], tile: playables[j], score: score };
+    , setScore = function (newScore) {
+        $('#player' + currentPlayer + '-score').html(newScore);
       }
-    }
-  }
 
-  fakeMove(best.piece, best.tile);
+    , countUnique = function (array) {
+        var i, keys = {};
+        for (i = 0; i < array.length; i += 1) {
+          keys[array[i]] = 1;
+        }
+        return Object.keys(keys).length;
+      }
 
-  if (best.piece && best.tile) {
-    console.log('Best move is:');
-    console.log('Piece: ' + best.piece.innerHTML);
-    console.log('Tile: ' + best.tile.className);
-    console.log('Score: ' + best.score);
-  }
-}
+    , bonusScore = function (values) {
+        var i, score, straight, unique;
+        if (values.length <= 1) {
+          return 0;
+        }
+        unique = countUnique(values);
+        if (values.length <= 2) {
+          /* a pair */
+          if (unique === 1) {
+            return 2;
+          }
+          return 0;
+        }
+        if (values.length <= 3) {
+          /* a pair */
+          if (unique === 2) {
+            return 2;
+          }
+          /* three of a kind */
+          if (unique === 1) {
+            return 6;
+          }
+          return 0;
+        }
+        score = 0;
+        straight = 0;
+        values.sort();
+        for (i = 0; i < values.length - 1; i += 1) {
+          if (values[i] + 1 === values[i + 1]) {
+            straight += 1;
+          }
+        }
+        /* a straight */
+        if (straight === 3) {
+          score += 4;
+        }
+        /* a pair */
+        if (unique === 3) {
+          score += 2;
+        }
+        /* three of a kind */
+        if (unique === 2) {
+          score += 6;
+        }
+        /* four of a kind */
+        if (unique === 1) {
+          score += 12;
+        }
+        return score;
+      }
 
-function toggleTurn() {
-  var i, pieces;
+    , guessScore = function (element, guess) {
+        var i, j, value, values, score, classes, matches, total;
+        element = $(element);
+        score = getScore();
+        classes = element.klass().replace(/\s+/g, ' ').split(' ');
+        for (i = 0; i < classes.length; i += 1) {
+          total = 0;
+          values = [];
+          matches = $('.' + classes[i]);
+          for (j = 0; j < matches.length; j += 1) {
+            value = matches[j].data();
+            if (guess && matches[j].klass() === element.klass()) {
+              value = guess;
+            }
+            if (!isNaN(value)) {
+              values.push(value);
+              total += value;
+            }
+          }
+          score += countScore(total, 3);
+          score += countScore(total, 5);
+          score += countScore(total, 7);
+          score += bonusScore(values);
+        }
+        return score;
+      }
 
-  pieces = getPieces();
-  for (i = 0; i < pieces.length; i += 1) {
-    DragDrop.unbind(pieces[i]);
-    if (numberOfPlayers >= 2) {
-      $(pieces[i]).remove('playing');
-    }
-  }
+      , isPlayable = function (element) {
+          element = $(element);
+          return element.name() === 'TD' && element.html() === '';
+        }
 
-  currentPlayer = (currentPlayer === 1) ? 2 : 1;
+      , getPieces = function (player) {
+          if (player === undefined) {
+            player = currentPlayer;
+          }
+          return $('#player' + player + '-pieces').kids('li');
+        }
 
-  pieces = getPieces();
-  for (i = 0; i < pieces.length; i += 1) {
-    DragDrop.bind(pieces[i], isPlayable, endTurn);
-    if (currentPlayer === 1 || numberOfPlayers !== 1) {
-      $(pieces[i]).add('playing');
-    }
-  }
+      , initPieces = function (player, values) {
+          var i, pieces = getPieces(player);
+          for (i = 0; i < pieces.length; i += 1) {
+            $(pieces[i]).html(values.shift());
+          }
+        }
 
-  if (numberOfPlayers === 0 || (numberOfPlayers === 1 && currentPlayer === 2)) {
-    makeMove();
-  }
-}
+      , fakeMove = function (piece, tile) {
+          if (isPlayable(tile)) {
+            piece = $(piece);
+            tile = $(tile);
+            piece.add('playing');
+            piece.animate('moving', function () { endTurn(piece, tile); });
+            piece.left(piece.left() + (tile.center().x - piece.center().x));
+            piece.top(piece.top() + (tile.center().y - piece.center().y));
+          }
+        }
 
-endTurn = function(piece, tile) {
-  piece = $(piece);
-  tile = $(tile);
-  console.log(piece.klass());
-  tile.data(piece.html());
-  tile.html('<span class="'+piece.klass()+' piece">'+piece.html()+'</span>');
-  piece.vanish();
-  setScore(guessScore(tile));
-  toggleTurn();
-};
+      , makeMove = function () {
+          var i, j, tiles, playables, piece, pieces, value, score, best;
 
-function shuffle(array) {
-  var i, j, temp;
-  for (i = array.length - 1; i > 0; i -= 1) {
-    j = Math.floor(Math.random() * (i + 1));
-    temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-}
+          tiles = $('<td>');
+          playables = [];
+          for (i = 0; i < tiles.length; i += 1) {
+            if (isPlayable(tiles[i])) {
+              playables.push(tiles[i]);
+            }
+          }
 
-pieces = [];
-for (i = 0; i < 4; i += 1) {
-  for (j = 1; j <= 13; j += 1) {
-    pieces.push(j);
-  }
-}
-shuffle(pieces);
+          pieces = getPieces();
 
-initPieces(1, pieces);
-initPieces(2, pieces);
+          best = { piece: undefined, tile: undefined, score: 0 };
+          for (i = 0; i < pieces.length; i += 1) {
+            value = $(pieces[i]).int();
+            for (j = 0; j < playables.length; j += 1) {
+              score = guessScore(playables[j], value);
+              if (score >= best.score) {
+                best = { piece: pieces[i], tile: playables[j], score: score };
+              }
+            }
+          }
 
-toggleTurn();
+          fakeMove(best.piece, best.tile);
+
+          if (best.piece && best.tile) {
+            console.log('Best move is:');
+            console.log('Piece: ' + best.piece.innerHTML);
+            console.log('Tile: ' + best.tile.className);
+            console.log('Score: ' + best.score);
+          }
+        }
+
+        , toggleTurn = function () {
+            var i, pieces;
+
+            pieces = getPieces();
+            for (i = 0; i < pieces.length; i += 1) {
+              DragDrop.unbind(pieces[i]);
+              if (numberOfPlayers >= 2) {
+                $(pieces[i]).remove('playing');
+              }
+            }
+
+            currentPlayer = (currentPlayer === 1) ? 2 : 1;
+
+            pieces = getPieces();
+            for (i = 0; i < pieces.length; i += 1) {
+              DragDrop.bind(pieces[i], isPlayable, endTurn);
+              if (currentPlayer === 1 || numberOfPlayers !== 1) {
+                $(pieces[i]).add('playing');
+              }
+            }
+
+            if (numberOfPlayers === 0 || (numberOfPlayers === 1 && currentPlayer === 2)) {
+              makeMove();
+            }
+          }
+
+        , endTurn = function (piece, tile) {
+            piece = $(piece);
+            tile = $(tile);
+            console.log(piece.klass());
+            tile.data(piece.html());
+            tile.html('<span class="'+piece.klass()+' piece">'+piece.html()+'</span>');
+            piece.vanish();
+            setScore(guessScore(tile));
+            toggleTurn();
+        }
+
+        , shuffle = function (array) {
+            var i, j, temp;
+            for (i = array.length - 1; i > 0; i -= 1) {
+              j = Math.floor(Math.random() * (i + 1));
+              temp = array[i];
+              array[i] = array[j];
+              array[j] = temp;
+            }
+          }
+
+        , restart = function () {
+            pieces = [];
+            for (i = 0; i < 4; i += 1) {
+              for (j = 1; j <= 13; j += 1) {
+                pieces.push(j);
+              }
+            }
+            shuffle(pieces);
+
+            initPieces(1, pieces);
+            initPieces(2, pieces);
+
+            currentPlayer = 2;
+            toggleTurn();
+          }
+        ;
+
+restart();
 
 }(jQuery));
