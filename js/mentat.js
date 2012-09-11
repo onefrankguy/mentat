@@ -9,11 +9,11 @@
       }
 
     , getScore = function () {
-        return $('#player' + currentPlayer + '-score').int();
+        return $('#player' + currentPlayer + 'score').int();
       }
 
     , setScore = function (newScore) {
-        $('#player' + currentPlayer + '-score').html(newScore);
+        $('#player' + currentPlayer + 'score').html(newScore);
       }
 
     , countUnique = function (array) {
@@ -111,7 +111,7 @@
           if (player === undefined) {
             player = currentPlayer;
           }
-          return $('#player' + player + '-pieces').kids('li');
+          return $('#player' + player + 'pieces').kids('li');
         }
 
       , initPieces = function (player, values) {
