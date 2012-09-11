@@ -1,11 +1,7 @@
 (function ($) {
   "use strict";
 
-  var i = 0
-    , j = 0
-    , k = 0
-    , pieces = []
-    , currentPlayer = 2
+  var currentPlayer = 2
     , numberOfPlayers = 1
 
     , countScore = function (total, factor) {
@@ -218,7 +214,7 @@
           }
 
         , restart = function () {
-            pieces = [];
+            var i, j, pieces = [];
             for (i = 0; i < 4; i += 1) {
               for (j = 1; j <= 13; j += 1) {
                 pieces.push(j);
