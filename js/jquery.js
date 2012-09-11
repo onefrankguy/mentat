@@ -164,12 +164,6 @@ var jQuery = (function (doc) {
     return '';
   };
 
-  Fn.prototype.vanish = function () {
-    if (this.element) {
-      this.element.parentNode.removeChild(this.element);
-    }
-  };
-
   Fn.prototype.kids = function (value) {
     if (this.element) {
       return this.element.getElementsByTagName(value);

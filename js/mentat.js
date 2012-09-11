@@ -171,11 +171,15 @@ var Mentat = (function ($, dnd) {
           }
 
           for (i = 0; i < pieces.length; i += 1) {
-            value = $(pieces[i]).int();
-            for (j = 0; j < playables.length; j += 1) {
-              score = guessScore(playables[j], value);
-              if (score >= best.score) {
-                best = { piece: pieces[i], tile: playables[j], score: score };
+            piece = $(pieces[i]);
+            if (!piece.has('hide')) {
+              console.log('checking piece ' + i);
+              value = piece.int();
+              for (j = 0; j < playables.length; j += 1) {
+                score = guessScore(playables[j], value);
+                if (score >= best.score) {
+                  best = { piece: piece, tile: playables[j], score: score };
+                }
               }
             }
           }
@@ -223,7 +227,7 @@ var Mentat = (function ($, dnd) {
             console.log(piece.klass());
             tile.data(piece.html());
             tile.html('<span class="'+piece.klass()+' piece">'+piece.html()+'</span>');
-            piece.vanish();
+            piece.add('hide');
             setScore(guessScore(tile));
             toggleTurn();
         }
