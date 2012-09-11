@@ -1,9 +1,9 @@
 var jQuery = (function (doc) {
   'use strict';
 
-  var fn = function (selector) {
+  var Fn = function (selector) {
     var i, nodes, results = [];
-    if (selector instanceof fn) {
+    if (selector instanceof Fn) {
       return selector;
     }
     this.element = selector;
@@ -14,7 +14,7 @@ var jQuery = (function (doc) {
       if (selector.indexOf('.') === 0) {
         nodes = doc.getElementsByClassName(selector.slice(1));
         for (i = 0; i < nodes.length; i += 1) {
-          results.push(new fn(nodes[i]));
+          results.push(new Fn(nodes[i]));
         }
         return results;
       }
@@ -22,7 +22,7 @@ var jQuery = (function (doc) {
         selector = selector.slice(1, -1);
         nodes = doc.getElementsByTagName(selector);
         for (i = 0; i < nodes.length; i += 1) {
-          results.push(new fn(nodes[i]));
+          results.push(new Fn(nodes[i]));
         }
         return results;
       }
@@ -31,14 +31,14 @@ var jQuery = (function (doc) {
   },
 
   root = function (selector) {
-    return new fn(selector);
+    return new Fn(selector);
   };
 
   root.fromPoint = function (x, y) {
     return root(doc.elementFromPoint(x, y));
   };
 
-  fn.prototype.html = function (value) {
+  Fn.prototype.html = function (value) {
     if (this.element) {
       if (value === undefined) {
         return this.element.innerHTML;
@@ -48,11 +48,11 @@ var jQuery = (function (doc) {
     return this;
   };
 
-  fn.prototype.int = function () {
+  Fn.prototype.int = function () {
     return parseInt(this.html(), 10);
   };
 
-  fn.prototype.top = function (value) {
+  Fn.prototype.top = function (value) {
     if (this.element) {
       if (value === undefined) {
         return parseInt(this.element.style.top, 10);
@@ -61,7 +61,7 @@ var jQuery = (function (doc) {
     }
   };
 
-  fn.prototype.left = function (value) {
+  Fn.prototype.left = function (value) {
     if (this.element) {
       if (value === undefined) {
         return parseInt(this.element.style.left, 10);
@@ -70,13 +70,13 @@ var jQuery = (function (doc) {
     }
   };
 
-  fn.prototype.display = function (value) {
+  Fn.prototype.display = function (value) {
     if (this.element) {
       this.element.style.display = value;
     }
   };
 
-  fn.prototype.add = function (klass) {
+  Fn.prototype.add = function (klass) {
     if (this.element) {
       klass = ' ' + klass;
       if (this.element.className.indexOf(klass) < 0) {
@@ -85,26 +85,26 @@ var jQuery = (function (doc) {
     }
   };
 
-  fn.prototype.remove = function (klass) {
+  Fn.prototype.remove = function (klass) {
     if (this.element) {
       var regex = new RegExp('(\\s+)?' + klass, 'g');
       this.element.className = this.element.className.replace(regex, '');
     }
   };
 
-  fn.prototype.listen = function (message, callback) {
+  Fn.prototype.listen = function (message, callback) {
     if (this.element) {
       this.element.addEventListener(message, callback, false);
     }
   };
 
-  fn.prototype.ignore = function (message, callback) {
+  Fn.prototype.ignore = function (message, callback) {
     if (this.element) {
       this.element.removeEventListener(message, callback, false);
     }
   };
 
-  fn.prototype.center = function () {
+  Fn.prototype.center = function () {
     var e = this.element, x = 0, y = 0;
     if (e) {
       x = e.offsetWidth / 2;
@@ -118,10 +118,10 @@ var jQuery = (function (doc) {
     return { x: x, y: y };
   };
 
-  fn.prototype.animate = function (klass, callback) {
-    var self = this;
+  Fn.prototype.animate = function (klass, callback) {
+    var wrapper, self = this;
     if (this.element) {
-      var wrapper = function () {
+      wrapper = function () {
         self.ignore('webkitTransitionEnd', wrapper);
         self.ignore('otransitionend', wrapper);
         self.remove(klass);
@@ -135,14 +135,14 @@ var jQuery = (function (doc) {
     }
   };
 
-  fn.prototype.name = function () {
+  Fn.prototype.name = function () {
     if (this.element) {
       return this.element.nodeName;
     }
     return '';
   };
 
-  fn.prototype.data = function (value) {
+  Fn.prototype.data = function (value) {
     if (this.element) {
       if (value === undefined) {
         return parseInt(this.element.getAttribute('data-value'), 10);
@@ -152,27 +152,27 @@ var jQuery = (function (doc) {
     return '';
   };
 
-  fn.prototype.klass = function () {
+  Fn.prototype.klass = function () {
     if (this.element) {
       return this.element.className;
     }
     return '';
   };
 
-  fn.prototype.vanish = function () {
+  Fn.prototype.vanish = function () {
     if (this.element) {
       this.element.parentNode.removeChild(this.element);
     }
   };
 
-  fn.prototype.kids = function (value) {
+  Fn.prototype.kids = function (value) {
     if (this.element) {
       return this.element.getElementsByTagName(value);
     }
     return [];
   };
 
-  fn.prototype.unwrap = function () {
+  Fn.prototype.unwrap = function () {
     return this.element;
   };
 
