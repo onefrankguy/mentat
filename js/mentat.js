@@ -17,7 +17,10 @@
       }
 
     , countUnique = function (array) {
-        var i, keys = {};
+        var i = 0
+          , keys = {}
+          ;
+
         for (i = 0; i < array.length; i += 1) {
           keys[array[i]] = 1;
         }
@@ -25,7 +28,12 @@
       }
 
     , bonusScore = function (values) {
-        var i, score, straight, unique;
+        var i = 0
+          , score = 0
+          , straight = 0
+          , unique = 0
+          ;
+
         if (values.length <= 1) {
           return 0;
         }
@@ -76,9 +84,17 @@
       }
 
     , guessScore = function (element, guess) {
-        var i, j, value, values, score, classes, matches, total;
+        var i = 0
+          , j = 0
+          , value = 0
+          , values = []
+          , score = getScore()
+          , classes = []
+          , matches = []
+          , total = 0
+          ;
+
         element = $(element);
-        score = getScore();
         classes = element.klass().replace(/\s+/g, ' ').split(' ');
         for (i = 0; i < classes.length; i += 1) {
           total = 0;
@@ -115,7 +131,10 @@
         }
 
       , initPieces = function (player, values) {
-          var i, pieces = getPieces(player);
+          var i = 0
+            , pieces = getPieces(player)
+            ;
+
           for (i = 0; i < pieces.length; i += 1) {
             $(pieces[i]).html(values.shift());
           }
@@ -133,19 +152,23 @@
         }
 
       , makeMove = function () {
-          var i, j, tiles, playables, piece, pieces, value, score, best;
+          var i = 0
+            , j = 0
+            , tiles = $('<td>')
+            , playables = []
+            , piece = null
+            , pieces = getPieces()
+            , value = 0
+            , score = 0
+            , best = { piece: undefined, tile: undefined, score: 0 }
+            ;
 
-          tiles = $('<td>');
-          playables = [];
           for (i = 0; i < tiles.length; i += 1) {
             if (isPlayable(tiles[i])) {
               playables.push(tiles[i]);
             }
           }
 
-          pieces = getPieces();
-
-          best = { piece: undefined, tile: undefined, score: 0 };
           for (i = 0; i < pieces.length; i += 1) {
             value = $(pieces[i]).int();
             for (j = 0; j < playables.length; j += 1) {
@@ -167,9 +190,10 @@
         }
 
         , toggleTurn = function () {
-            var i, pieces;
+            var i = 0
+              , pieces = getPieces()
+              ;
 
-            pieces = getPieces();
             for (i = 0; i < pieces.length; i += 1) {
               DragDrop.unbind(pieces[i]);
               if (numberOfPlayers >= 2) {
@@ -204,7 +228,11 @@
         }
 
         , shuffle = function (array) {
-            var i, j, temp;
+            var i = 0
+              , j = 0
+              , temp
+              ;
+
             for (i = array.length - 1; i > 0; i -= 1) {
               j = Math.floor(Math.random() * (i + 1));
               temp = array[i];
@@ -214,7 +242,11 @@
           }
 
         , restart = function () {
-            var i, j, pieces = [];
+            var i = 0
+              , j = 0
+              , pieces = []
+              ;
+
             for (i = 0; i < 4; i += 1) {
               for (j = 1; j <= 13; j += 1) {
                 pieces.push(j);
