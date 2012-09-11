@@ -128,20 +128,16 @@ function isPlayable(element) {
 }
 
 function fakeMove(piece, tile) {
-  var dx, dy, pieceCenter, tileCenter;
-
   if (isPlayable(tile)) {
-    pieceCenter = $(piece).center();
-    tileCenter = $(tile).center();
-    $(piece).add('playing');
+    piece = $(piece);
+    tile = $(tile);
+    piece.add('playing');
     animate(piece, 'moving', function () {
-      $(piece).remove('moving');
-      endTurn(piece, tile);
+      piece.remove('moving');
+      endTurn(piece.unwrap(), tile.unwrap());
     });
-    dx = tileCenter.x - pieceCenter.x;
-    dy = tileCenter.y - pieceCenter.y;
-    piece.style.left = parseInt(piece.style.left, 10) + dx + 'px';
-    piece.style.top = parseInt(piece.style.top, 10) + dy + 'px';
+    piece.left(piece.left() + (tile.center().x - piece.center().x));
+    piece.top(piece.top() + (tile.center().y - piece.center().y));
   }
 }
 
