@@ -76,6 +76,13 @@ var jQuery = (function (doc) {
     }
   };
 
+  Fn.prototype.has = function (klass) {
+    if (this.element) {
+      return this.element.className.indexOf(klass) >= 0;
+    }
+    return false;
+  };
+
   Fn.prototype.add = function (klass) {
     if (this.element) {
       klass = ' ' + klass;

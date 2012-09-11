@@ -166,10 +166,11 @@ em {
   font-size: 1.25em;
 }
 .human-icon, .computer-icon {
+  width: 2em;
   padding: 0.5em 0;
 }
 .human-icon span:first-child {
-  height: 0.6em;
+  height: 0.725em;
   width: 0.6em;
   border: 0.0625em solid #586e75;
   border-radius: 0.5em;

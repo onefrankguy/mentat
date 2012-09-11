@@ -1,7 +1,8 @@
 var Mentat = (function ($, dnd) {
   'use strict';
 
-  var currentPlayer = 2
+  var doc = $(document)
+    , currentPlayer = 2
     , numberOfPlayers = 1
 
     , countScore = function (total, factor) {
@@ -260,10 +261,32 @@ var Mentat = (function ($, dnd) {
             currentPlayer = 2;
             toggleTurn();
           }
+
+        , onIconPress = function (e) {
+            var element = $(this), wrapper = function (e) {
+              doc.off('mouseup', wrapper);
+              if (element.has('human-icon')) {
+                element.remove('human-icon');
+                element.add('computer-icon');
+              } else if (element.has('computer-icon')) {
+                element.remove('computer-icon');
+                element.add('human-icon');
+              }
+              return false;
+            };
+            doc.on('mouseup', wrapper);
+            return false;
+          }
+
+        , play = function () {
+            $('#player1icon').on('mousedown', onIconPress);
+            $('#player2icon').on('mousedown', onIconPress);
+            restart();
+          }
         ;
 
-        return { restart: restart };
+        return { play: play };
 
 }(jQuery, DragDrop));
 
-Mentat.restart();
+Mentat.play();
