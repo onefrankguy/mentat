@@ -10,34 +10,6 @@ var DragDrop = (function ($, doc) {
     , droppable = null
     , fin = null
 
-    , bind = function (element, check, done) {
-        element = $(element);
-        element.listen('mousedown', onStart);
-        element.left(0);
-        element.top(0);
-        droppable = check;
-        fin = done;
-      }
-
-    , unbind = function (element) {
-        $(element).ignore('mousedown', onStart);
-      }
-
-    , onStart = function (e) {
-        if (dragged.unwrap()) {
-          onStop();
-        }
-        dragged = $(this);
-        dragged.add('dragging');
-        startX = dragged.left();
-        startY = dragged.top();
-        initialX = e.clientX;
-        initialY = e.clientY;
-        doc.listen('mousemove', onMove);
-        doc.listen('mouseup', onStop);
-        return false;
-      }
-
     , onMove = function (e) {
         dragged.left(startX + (e.clientX - initialX));
         dragged.top(startY + (e.clientY - initialY));
@@ -68,6 +40,34 @@ var DragDrop = (function ($, doc) {
         dropped = $();
         dragged = $();
         return false;
+      }
+
+    , onStart = function (e) {
+        if (dragged.unwrap()) {
+          onStop();
+        }
+        dragged = $(this);
+        dragged.add('dragging');
+        startX = dragged.left();
+        startY = dragged.top();
+        initialX = e.clientX;
+        initialY = e.clientY;
+        doc.listen('mousemove', onMove);
+        doc.listen('mouseup', onStop);
+        return false;
+      }
+
+    , bind = function (element, check, done) {
+        element = $(element);
+        element.listen('mousedown', onStart);
+        element.left(0);
+        element.top(0);
+        droppable = check;
+        fin = done;
+      }
+
+    , unbind = function (element) {
+        $(element).ignore('mousedown', onStart);
       }
     ;
 
