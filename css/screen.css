@@ -158,6 +158,9 @@ em {
 .playing {
   color: #586e75;
 }
+.hide {
+  display: none;
+}
 #player1 span, #player2 span {
   display: block;
   margin: 0 auto;

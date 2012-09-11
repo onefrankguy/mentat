@@ -34,8 +34,12 @@ var jQuery = (function (doc) {
     return new Fn(selector);
   };
 
-  root.fromPoint = function (x, y) {
-    return root(doc.elementFromPoint(x, y));
+  root.fromPoint = function (x, y, obstruction) {
+    var element, obstruction = root(obstruction);
+    obstruction.add('hide');
+    element = root(doc.elementFromPoint(x, y));
+    obstruction.remove('hide');
+    return element;
   };
 
   Fn.prototype.html = function (value) {
@@ -67,12 +71,6 @@ var jQuery = (function (doc) {
         return parseInt(this.element.style.left, 10);
       }
       this.element.style.left = value + 'px';
-    }
-  };
-
-  Fn.prototype.display = function (value) {
-    if (this.element) {
-      this.element.style.display = value;
     }
   };
 

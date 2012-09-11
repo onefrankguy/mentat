@@ -14,9 +14,7 @@ var DragDrop = (function ($, doc) {
         dragged.left(startX + (e.clientX - initialX));
         dragged.top(startY + (e.clientY - initialY));
         dropped.remove('dropping');
-        dragged.display('none');
-        dropped = $.fromPoint(e.clientX, e.clientY);
-        dragged.display('inline-block');
+        dropped = $.fromPoint(e.clientX, e.clientY, dragged);
         if (droppable(dropped)) {
           dropped.add('dropping');
         }
@@ -27,13 +25,11 @@ var DragDrop = (function ($, doc) {
         doc.off('mouseup', onStop);
         doc.off('mousemove', onMove);
         dragged.remove('dragging');
-        dragged.display('none');
-        dropped = $.fromPoint(e.clientX, e.clientY);
+        dropped = $.fromPoint(e.clientX, e.clientY, dragged);
         dropped.remove('dropping');
         if (droppable(dropped)) {
           fin(dragged, dropped);
         } else {
-          dragged.display('inline-block');
           dragged.left(startX);
           dragged.top(startY);
         }
