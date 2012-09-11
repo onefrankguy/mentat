@@ -134,7 +134,10 @@ function fakeMove(piece, tile) {
     pieceCenter = $(piece).center();
     tileCenter = $(tile).center();
     $(piece).add('playing');
-    animate(piece, 'moving', function () { endTurn(piece, tile); });
+    animate(piece, 'moving', function () {
+      $(piece).remove('moving');
+      endTurn(piece, tile);
+    });
     dx = tileCenter.x - pieceCenter.x;
     dy = tileCenter.y - pieceCenter.y;
     piece.style.left = parseInt(piece.style.left, 10) + dx + 'px';
@@ -209,7 +212,7 @@ endTurn = function(piece, tile) {
   if (piece && tile) {
     console.log('Class: ' + piece.className);
     element = '<span class="';
-    element += piece.className.replace(/moving/g, '');
+    element += piece.className;
     element += ' piece">' + piece.innerHTML + '</span>';
     tile.setAttribute('data-value', piece.innerHTML);
     tile.innerHTML = element;
