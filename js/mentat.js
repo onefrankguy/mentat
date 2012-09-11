@@ -1,46 +1,24 @@
-(function () {
+(function ($) {
 "use strict";
 
-var i, j, k, pieces, currentPlayer, numberOfPlayers, dragDrop, endTurn;
+var i, j, k, pieces, currentPlayer, numberOfPlayers, endTurn;
 
 currentPlayer = 2;
 numberOfPlayers = 1;
 
-function $(id) {
-  return document.getElementById(id);
-}
-
-function html(id, text) {
-  $(id).innerHTML = text;
-}
-
-function addClass(selector, value) {
-  if (typeof selector === 'string') {
-    selector = $(selector);
-  }
-  selector.className += ' ' + value;
-}
-
-function removeClass(selector, value) {
-  var regex = new RegExp(' ' + value, 'g');
-  if (typeof selector === 'string') {
-    selector = $(selector);
-  }
-  selector.className = selector.className.replace(regex, '');
-}
-
 function animate(element, klass, callback) {
+  element = $(element);
   var wrapper = function () {
     if (callback) {
       callback();
     }
-    removeClass(element, klass);
-    element.removeEventListener('webkitTransitionEnd', wrapper, true);
-    element.removeEventListener('otransitionend', wrapper, true);
+    element.remove(klass);
+    element.ignore('webkitTransitionEnd', wrapper);
+    element.ignore('otransitionend', wrapper);
   };
-  element.addEventListener('webkitTransitionEnd', wrapper, true);
-  element.addEventListener('otransitionend', wrapper, true);
-  addClass(element, klass);
+  element.listen('webkitTransitionEnd', wrapper);
+  element.listen('otransitionend', wrapper);
+  element.add(klass);
 }
 
 function findCenter(element) {
@@ -62,11 +40,11 @@ function countScore(total, factor) {
 }
 
 function getScore() {
-  return parseInt($('player' + currentPlayer + '-score').innerHTML, 10);
+  return parseInt($('player' + currentPlayer + '-score').html(), 10);
 }
 
 function setScore(newScore) {
-  html('player' + currentPlayer + '-score', newScore);
+  $('player' + currentPlayer + '-score').html(newScore);
 }
 
 function countUnique(array) {
@@ -160,7 +138,7 @@ function updateScore(element) {
 }
 
 function isPlayable(element) {
-  return element && element.nodeName === 'TD' && element.innerHTML === '';
+  return element && element.nodeName === 'TD' && $(element).html() === '';
 }
 
 function fakeMove(piece, tile) {
@@ -169,7 +147,7 @@ function fakeMove(piece, tile) {
   if (isPlayable(tile)) {
     pieceCenter = findCenter(piece);
     tileCenter = findCenter(tile);
-    addClass(piece, 'playing');
+    $(piece).add('playing');
     animate(piece, 'moving', function () { endTurn(piece, tile); });
     dx = tileCenter.x - pieceCenter.x;
     dy = tileCenter.y - pieceCenter.y;
@@ -191,7 +169,7 @@ function makeMove() {
 
   pieces = [];
   for (i = 0; i < 8; i += 1) {
-    piece = $("piece" + currentPlayer + i);
+    piece = $("piece" + currentPlayer + i).unwrap();
     if (piece) {
       pieces.push(piece);
     }
@@ -199,7 +177,7 @@ function makeMove() {
 
   best = { piece: undefined, tile: undefined, score: 0 };
   for (i = 0; i < pieces.length; i += 1) {
-    value = parseInt(pieces[i].innerHTML, 10);
+    value = parseInt($(pieces[i]).html(), 10);
     for (j = 0; j < playables.length; j += 1) {
       score = guessScore(playables[j], value);
       if (score >= best.score) {
@@ -219,13 +197,21 @@ function makeMove() {
 }
 
 function toggleTurn() {
-  var i;
+  var i, element;
   for (i = 0; i < 8; i += 1) {
-    dragDrop.unbind("piece" + currentPlayer + i);
+    element = "piece" + currentPlayer + i;
+    DragDrop.unbind(element);
+    if (numberOfPlayers >= 2) {
+      $(element).remove('playing');
+    }
   }
   currentPlayer = (currentPlayer === 1) ? 2 : 1;
   for (i = 0; i < 8; i += 1) {
-    dragDrop.bind("piece" + currentPlayer + i);
+    element = "piece" + currentPlayer + i;
+    DragDrop.bind(element, isPlayable, endTurn);
+    if (currentPlayer === 1 || numberOfPlayers !== 1) {
+      $(element).add('playing');
+    }
   }
   if (numberOfPlayers === 0 || (numberOfPlayers === 1 && currentPlayer === 2)) {
     makeMove();
@@ -244,99 +230,6 @@ endTurn = function(piece, tile) {
     piece.parentNode.removeChild(piece);
     updateScore(tile);
     toggleTurn();
-  }
-};
-
-dragDrop = {
-  initialMouseX: null,
-  initialMouseY: null,
-  startX: null,
-  startY: null,
-  draggedObject: null,
-  droppedObject: null,
-
-  bind: function (element) {
-    if (typeof element === "string") {
-      element = $(element);
-    }
-    if (element) {
-      if (currentPlayer === 1 || numberOfPlayers !== 1) {
-        addClass(element, 'playing');
-      }
-      element.addEventListener("mousedown", dragDrop.startDragMouse, false);
-      element.style.top = "0px";
-      element.style.left = "0px";
-    }
-  },
-
-  unbind: function (element) {
-    if (typeof element === "string") {
-      element = $(element);
-    }
-    if (element) {
-      if (numberOfPlayers >= 2) {
-        removeClass(element, 'playing');
-      }
-      element.removeEventListener("mousedown", dragDrop.startDragMouse, false);
-    }
-  },
-
-  startDragMouse: function (e) {
-    dragDrop.startDrag(this);
-    dragDrop.initialMouseX = e.clientX;
-    dragDrop.initialMouseY = e.clientY;
-    document.addEventListener("mousemove", dragDrop.dragMouse, false);
-    document.addEventListener("mouseup", dragDrop.releaseElement, false);
-    addClass(dragDrop.draggedObject, 'dragging');
-    return false;
-  },
-
-  startDrag: function (object) {
-    if (dragDrop.draggedObjct) {
-      dragDrop.releaseElement();
-    }
-    dragDrop.startX = parseInt(object.style.left, 10);
-    dragDrop.startY = parseInt(object.style.top, 10);
-    dragDrop.draggedObject = object;
-  },
-
-  dragMouse: function (e) {
-    var dx, dy;
-    dx = e.clientX - dragDrop.initialMouseX;
-    dy = e.clientY - dragDrop.initialMouseY;
-    dragDrop.draggedObject.style.left = dragDrop.startX + dx + "px";
-    dragDrop.draggedObject.style.top = dragDrop.startY + dy + "px";
-    if (dragDrop.droppedObject) {
-      removeClass(dragDrop.droppedObject, 'dropping');
-    }
-    dragDrop.draggedObject.style.display = 'none';
-    dragDrop.droppedObject = document.elementFromPoint(e.clientX, e.clientY);
-    dragDrop.draggedObject.style.display = 'inline-block';
-    if (isPlayable(dragDrop.droppedObject)) {
-      addClass(dragDrop.droppedObject, 'dropping');
-    }
-    return false;
-  },
-
-  releaseElement: function (e) {
-    var under = null;
-    document.removeEventListener("mousemove", dragDrop.dragMouse, false);
-    document.removeEventListener("mouseup", dragDrop.releaseElement, false);
-    removeClass(dragDrop.draggedObject, 'dragging');
-    dragDrop.draggedObject.style.display = 'none';
-    under = document.elementFromPoint(e.clientX, e.clientY);
-    if (isPlayable(under)) {
-      endTurn(dragDrop.draggedObject, under);
-    } else {
-      dragDrop.draggedObject.style.display = 'inline-block';
-      dragDrop.draggedObject.style.left = dragDrop.startX + "px";
-      dragDrop.draggedObject.style.top = dragDrop.startY + "px";
-    }
-    dragDrop.draggedObject = null;
-    if (dragDrop.droppedObject) {
-      removeClass(dragDrop.droppedObject, 'dropping');
-    }
-    dragDrop.droppedObject = null;
   }
 };
 
@@ -360,14 +253,14 @@ shuffle(pieces);
 
 for (i = 0, j = 0, k = 0; i < 16; i += 1) {
   if (i % 2 === 0) {
-    html("piece1" + j, pieces[i]);
+    $("piece1" + j).html(pieces[i]);
     j += 1;
   } else {
-    html("piece2" + k, pieces[i]);
+    $("piece2" + k).html(pieces[i]);
     k += 1;
   }
 }
 
 toggleTurn();
 
-}());
+}(jQuery));
