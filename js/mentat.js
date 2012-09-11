@@ -80,15 +80,16 @@ function bonusScore(values) {
 
 function guessScore(element, guess) {
   var i, j, value, values, score, classes, matches, total;
+  element = $(element);
   score = getScore();
-  classes = element.className.replace(/\s+/g, ' ').split(' ');
+  classes = element.klass().replace(/\s+/g, ' ').split(' ');
   for (i = 0; i < classes.length; i += 1) {
     total = 0;
     values = [];
-    matches = document.getElementsByClassName(classes[i]);
+    matches = $.findClasses(classes[i]);
     for (j = 0; j < matches.length; j += 1) {
-      value = parseInt(matches[j].getAttribute('data-value'), 10);
-      if (guess && matches[j] === element) {
+      value = matches[j].data();
+      if (guess && matches[j].klass() === element.klass()) {
         value = guess;
       }
       if (!isNaN(value)) {
@@ -201,7 +202,7 @@ endTurn = function(piece, tile) {
   tile.data(piece.html());
   tile.html('<span class="'+piece.klass()+' piece">'+piece.html()+'</span>');
   piece.vanish();
-  setScore(guessScore(tile.unwrap()));
+  setScore(guessScore(tile));
   toggleTurn();
 };
 

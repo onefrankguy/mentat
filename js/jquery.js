@@ -20,6 +20,14 @@ var jQuery = (function (doc) {
     return root(doc.elementFromPoint(x, y));
   };
 
+  root.findClasses = function (klass) {
+    var i, results  = [], nodes = doc.getElementsByClassName(klass);
+    for (i = 0; i < nodes.length; i += 1) {
+      results.push(root(nodes[i]));
+    }
+    return results;
+  };
+
   fn.prototype.html = function (value) {
     if (this.element) {
       if (value === undefined) {
@@ -123,7 +131,7 @@ var jQuery = (function (doc) {
   fn.prototype.data = function (value) {
     if (this.element) {
       if (value === undefined) {
-        return this.element.getAttribute('data-value');
+        return parseInt(this.element.getAttribute('data-value'), 10);
       }
       this.element.setAttribute('data-value', value);
     }
