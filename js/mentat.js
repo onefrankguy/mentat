@@ -104,10 +104,6 @@ function guessScore(element, guess) {
   return score;
 }
 
-function updateScore(element) {
-  setScore(guessScore(element));
-}
-
 function isPlayable(element) {
   element = $(element);
   return element.name() === 'TD' && element.html() === '';
@@ -193,7 +189,7 @@ endTurn = function(piece, tile) {
   tile.data(piece.html());
   tile.html('<span class="'+piece.klass()+' piece">'+piece.html()+'</span>');
   piece.vanish();
-  updateScore(tile.unwrap());
+  setScore(guessScore(tile.unwrap()));
   toggleTurn();
 };
 
