@@ -120,6 +120,29 @@ var jQuery = (function (doc) {
     return '';
   };
 
+  fn.prototype.data = function (value) {
+    if (this.element) {
+      if (value === undefined) {
+        return this.element.getAttribute('data-value');
+      }
+      this.element.setAttribute('data-value', value);
+    }
+    return '';
+  };
+
+  fn.prototype.klass = function () {
+    if (this.element) {
+      return this.element.className;
+    }
+    return '';
+  };
+
+  fn.prototype.vanish = function () {
+    if (this.element) {
+      this.element.parentNode.removeChild(this.element);
+    }
+  };
+
   fn.prototype.unwrap = function () {
     return this.element;
   };

@@ -118,9 +118,7 @@ function fakeMove(piece, tile) {
     piece = $(piece);
     tile = $(tile);
     piece.add('playing');
-    piece.animate('moving', function () {
-      endTurn(piece.unwrap(), tile.unwrap());
-    });
+    piece.animate('moving', function () { endTurn(piece, tile); });
     piece.left(piece.left() + (tile.center().x - piece.center().x));
     piece.top(piece.top() + (tile.center().y - piece.center().y));
   }
@@ -189,18 +187,14 @@ function toggleTurn() {
 }
 
 endTurn = function(piece, tile) {
-  var element;
-  if (piece && tile) {
-    console.log('Class: ' + piece.className);
-    element = '<span class="';
-    element += piece.className;
-    element += ' piece">' + piece.innerHTML + '</span>';
-    tile.setAttribute('data-value', piece.innerHTML);
-    tile.innerHTML = element;
-    piece.parentNode.removeChild(piece);
-    updateScore(tile);
-    toggleTurn();
-  }
+  piece = $(piece);
+  tile = $(tile);
+  console.log(piece.klass());
+  tile.data(piece.html());
+  tile.html('<span class="'+piece.klass()+' piece">'+piece.html()+'</span>');
+  piece.vanish();
+  updateScore(tile.unwrap());
+  toggleTurn();
 };
 
 function shuffle(array) {

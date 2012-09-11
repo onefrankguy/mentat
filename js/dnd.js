@@ -58,7 +58,7 @@ var DragDrop = (function ($, doc) {
         dragged.display('none');
         dropped = $.fromPoint(e.clientX, e.clientY);
         if (droppable(dropped)) {
-          fin(dragged.unwrap(), dropped.unwrap());
+          fin(dragged, dropped);
         } else {
           dragged.display('inline-block');
           dragged.left(startX);
