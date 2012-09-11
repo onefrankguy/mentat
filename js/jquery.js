@@ -56,7 +56,10 @@ var jQuery = (function (doc) {
 
   fn.prototype.add = function (klass) {
     if (this.element) {
-      this.element.className += ' ' + klass;
+      klass = ' ' + klass;
+      if (this.element.className.indexOf(klass) < 0) {
+        this.element.className += klass;
+      }
     }
   };
 
