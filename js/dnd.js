@@ -57,6 +57,7 @@ var DragDrop = (function ($, doc) {
         dragged.remove('dragging');
         dragged.display('none');
         dropped = $.fromPoint(e.clientX, e.clientY);
+        dropped.remove('dropping');
         if (droppable(dropped)) {
           fin(dragged, dropped);
         } else {
@@ -64,7 +65,6 @@ var DragDrop = (function ($, doc) {
           dragged.left(startX);
           dragged.top(startY);
         }
-        dropped.remove('dropping');
         dropped = $();
         dragged = $();
         return false;
