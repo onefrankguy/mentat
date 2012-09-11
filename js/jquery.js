@@ -1,5 +1,5 @@
 var jQuery = (function (doc) {
-  "use strict";
+  'use strict';
 
   var fn = function (selector) {
     var i, nodes, results = [];

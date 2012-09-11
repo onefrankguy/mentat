@@ -1,5 +1,5 @@
-(function ($) {
-  "use strict";
+var Mentat = (function ($, dnd) {
+  'use strict';
 
   var currentPlayer = 2
     , numberOfPlayers = 1
@@ -195,7 +195,7 @@
               ;
 
             for (i = 0; i < pieces.length; i += 1) {
-              DragDrop.unbind(pieces[i]);
+              dnd.unbind(pieces[i]);
               if (numberOfPlayers >= 2) {
                 $(pieces[i]).remove('playing');
               }
@@ -205,7 +205,7 @@
 
             pieces = getPieces();
             for (i = 0; i < pieces.length; i += 1) {
-              DragDrop.bind(pieces[i], isPlayable, endTurn);
+              dnd.bind(pieces[i], isPlayable, endTurn);
               if (currentPlayer === 1 || numberOfPlayers !== 1) {
                 $(pieces[i]).add('playing');
               }
@@ -262,6 +262,8 @@
           }
         ;
 
-restart();
+        return { restart: restart };
 
-}(jQuery));
+}(jQuery, DragDrop));
+
+Mentat.restart();

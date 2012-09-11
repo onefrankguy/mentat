@@ -1,5 +1,5 @@
 var DragDrop = (function ($, doc) {
-  "use strict";
+  'use strict';
 
   var initialX = 0
     , initialY = 0
