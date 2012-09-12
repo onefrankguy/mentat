@@ -155,11 +155,22 @@ var Mentat = (function ($, dnd) {
 
       , initPieces = function (player, values) {
           var i = 0
+            , mode = getMode()
+            , piece = null
             , pieces = getPieces(player)
             ;
 
           for (i = 0; i < pieces.length; i += 1) {
-            $(pieces[i]).html(values.shift()).remove('hide');
+            piece = $(pieces[i]);
+            piece.html(values.shift());
+            piece.remove('hide');
+            if (mode === 'cvc' ||
+               (mode === 'hvc' && player === 1) ||
+               (mode === 'cvh' && player === 2)) {
+              piece.add('playing');
+            } else {
+              piece.remove('playing');
+            }
           }
         }
 
@@ -255,12 +266,16 @@ var Mentat = (function ($, dnd) {
             pieces = getPieces();
             for (i = 0; i < pieces.length; i += 1) {
               dnd.bind(pieces[i], isPlayable, endTurn);
-              if (currentPlayer === 1 || (mode === 'hvh' || mode === 'cvc')) {
+              if ((currentPlayer === 1 && mode === 'hvc') ||
+                  (currentPlayer === 2 && mode === 'cvh') ||
+                  (mode === 'hvh' || mode === 'cvc')) {
                 $(pieces[i]).add('playing');
               }
             }
 
-            if (mode === 'cvc' || (mode !== 'hvh' && currentPlayer === 2)) {
+            if (mode === 'cvc' ||
+               (mode === 'cvh' && currentPlayer === 1) ||
+               (mode === 'hvc' && currentPlayer === 2)) {
               makeMove();
             }
           }
@@ -303,7 +318,7 @@ var Mentat = (function ($, dnd) {
             }
             shuffle(pieces);
 
-            currentPlayer = getMode() === 'cvh' ? 1 : 2;
+            currentPlayer = 2;
 
             initPieces(1, pieces);
             initPieces(2, pieces);

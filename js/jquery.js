@@ -95,6 +95,7 @@ var jQuery = (function (doc) {
       var regex = new RegExp('(\\s+)?' + klass, 'g');
       this.element.className = this.element.className.replace(regex, '');
     }
+    return this;
   };
 
   Fn.prototype.on = function (message, callback) {
