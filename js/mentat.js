@@ -3,7 +3,6 @@ var Mentat = (function ($, dnd) {
 
   var doc = $(document)
     , currentPlayer = 2
-    , numberOfPlayers = 1
 
     , countScore = function (total, factor) {
         return (total % factor === 0) ? total / factor : 0;
@@ -134,6 +133,26 @@ var Mentat = (function ($, dnd) {
           return $('#player' + player + 'pieces').kids('li');
         }
 
+      , getMode = function () {
+          var player1 = $('#player1icon')
+            , player2 = $('#player2icon')
+            ;
+
+          if (player1.has('human-icon') && player2.has('human-icon')) {
+            return 'hvh';
+          }
+          if (player1.has('human-icon') && player2.has('computer-icon')) {
+            return 'hvc';
+          }
+          if (player1.has('computer-icon') && player2.has('human-icon')) {
+            return 'cvh';
+          }
+          if (player1.has('computer-icon') && player2.has('computer-icon')) {
+            return 'cvc';
+          }
+          return '';
+        }
+
       , initPieces = function (player, values) {
           var i = 0
             , pieces = getPieces(player)
@@ -151,25 +170,6 @@ var Mentat = (function ($, dnd) {
 
           for (i = 0; i < tiles.length; i += 1) {
             tiles[i].html('').data('');
-          }
-        }
-
-      , initAI = function () {
-          var player1 = $('#player1icon')
-            , player2 = $('#player2icon')
-            ;
-
-          numberOfPlayers = 1;
-          if (player1.has('human-icon') && player2.has('human-icon')) {
-            numberOfPlayers = 2;
-          }
-          if (player1.has('computer-icon') && player2.has('computer-icon')) {
-            numberOfPlayers = 0;
-          }
-
-          currentPlayer = 2;
-          if (player1.has('computer-icon') && player2.has('human-icon')) {
-            currentPlayer = 1;
           }
         }
 
@@ -239,12 +239,13 @@ var Mentat = (function ($, dnd) {
 
         , toggleTurn = function () {
             var i = 0
+              , mode = getMode()
               , pieces = getPieces()
               ;
 
             for (i = 0; i < pieces.length; i += 1) {
               dnd.unbind(pieces[i]);
-              if (numberOfPlayers >= 2) {
+              if (mode === 'hvh') {
                 $(pieces[i]).remove('playing');
               }
             }
@@ -254,12 +255,12 @@ var Mentat = (function ($, dnd) {
             pieces = getPieces();
             for (i = 0; i < pieces.length; i += 1) {
               dnd.bind(pieces[i], isPlayable, endTurn);
-              if (currentPlayer === 1 || numberOfPlayers !== 1) {
+              if (currentPlayer === 1 || (mode === 'hvh' || mode === 'cvc')) {
                 $(pieces[i]).add('playing');
               }
             }
 
-            if (numberOfPlayers === 0 || (numberOfPlayers === 1 && currentPlayer === 2)) {
+            if (mode === 'cvc' || (mode !== 'hvh' && currentPlayer === 2)) {
               makeMove();
             }
           }
@@ -302,7 +303,8 @@ var Mentat = (function ($, dnd) {
             }
             shuffle(pieces);
 
-            initAI();
+            currentPlayer = getMode() === 'cvh' ? 1 : 2;
+
             initPieces(1, pieces);
             initPieces(2, pieces);
             initBoard();
