@@ -13,8 +13,11 @@ var Mentat = (function ($, dnd) {
         return $('#player' + currentPlayer + 'score').int();
       }
 
-    , setScore = function (newScore) {
-        $('#player' + currentPlayer + 'score').html(newScore);
+    , setScore = function (newScore, player) {
+        if (player === undefined) {
+          player = currentPlayer;
+        }
+        $('#player' + player + 'score').html(newScore);
       }
 
     , countUnique = function (array) {
@@ -137,16 +140,56 @@ var Mentat = (function ($, dnd) {
             ;
 
           for (i = 0; i < pieces.length; i += 1) {
-            $(pieces[i]).html(values.shift());
+            $(pieces[i]).html(values.shift()).remove('hide');
+          }
+        }
+
+      , initBoard = function () {
+          var i = 0
+            , tiles = $('<td>')
+            ;
+
+          for (i = 0; i < tiles.length; i += 1) {
+            tiles[i].html('').data('');
+          }
+        }
+
+      , initAI = function () {
+          var player1 = $('#player1icon')
+            , player2 = $('#player2icon')
+            ;
+
+          numberOfPlayers = 1;
+          if (player1.has('human-icon') && player2.has('human-icon')) {
+            numberOfPlayers = 2;
+          }
+          if (player1.has('computer-icon') && player2.has('computer-icon')) {
+            numberOfPlayers = 0;
+          }
+
+          currentPlayer = 2;
+          if (player1.has('computer-icon') && player2.has('human-icon')) {
+            currentPlayer = 1;
           }
         }
 
       , fakeMove = function (piece, tile) {
+          var startX = 0
+            , startY = 0
+            ;
+
           if (isPlayable(tile)) {
             piece = $(piece);
             tile = $(tile);
+            startX = piece.left();
+            startY = piece.top();
             piece.add('playing');
-            piece.animate('moving', function () { endTurn(piece, tile); });
+            piece.animate('moving', function () {
+              endTurn(piece, tile);
+              piece.remove('playing');
+              piece.left(startX);
+              piece.top(startY);
+            });
             piece.left(piece.left() + (tile.center().x - piece.center().x));
             piece.top(piece.top() + (tile.center().y - piece.center().y));
           }
@@ -259,10 +302,14 @@ var Mentat = (function ($, dnd) {
             }
             shuffle(pieces);
 
+            initAI();
             initPieces(1, pieces);
             initPieces(2, pieces);
+            initBoard();
 
-            currentPlayer = 2;
+            setScore(0, 1);
+            setScore(0, 2);
+
             toggleTurn();
           }
 
@@ -276,6 +323,7 @@ var Mentat = (function ($, dnd) {
                 element.remove('computer-icon');
                 element.add('human-icon');
               }
+              restart();
               return false;
             };
             doc.on('mouseup', wrapper);

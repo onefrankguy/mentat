@@ -29,10 +29,9 @@ var DragDrop = (function ($, doc) {
         dropped.remove('dropping');
         if (droppable(dropped)) {
           fin(dragged, dropped);
-        } else {
-          dragged.left(startX);
-          dragged.top(startY);
         }
+        dragged.left(startX);
+        dragged.top(startY);
         dropped = $();
         dragged = $();
         return false;
