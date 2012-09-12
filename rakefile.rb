@@ -4,10 +4,15 @@ task :default => :test
 
 desc "Makes sure the code isn't to big?"
 task :test do
+  old_size = File.exists?('mentat.zip') ? File.size('mentat.zip') : 0
   sh 'zip -r mentat . -i@manifest.txt'
-  size = File.size('mentat.zip')
+  new_size = File.size('mentat.zip')
+  puts "Old size: #{old_size} bytes (#{percent(old_size)}%)"
+  puts "New size: #{new_size} bytes (#{percent(new_size)}%)"
+  fail 'Zip file too big!' if new_size > 10 * 1024
+end
+
+def percent size
   max = 13 * 1024
-  percent = (size.to_f / max.to_f * 100).to_i
-  puts "Size: #{size} bytes (#{percent}%)"
-  fail 'Zip file too big!' if size > 10 * 1024
+  (size.to_f / max.to_f * 100).to_i
 end
