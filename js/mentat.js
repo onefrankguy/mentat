@@ -279,7 +279,7 @@ var Mentat = (function ($, dnd) {
             piece = $(piece);
             tile = $(tile);
             tile.data(piece.html());
-            tile.html('<span class="'+piece.klass()+' piece">'+piece.html()+'</span>');
+            tile.html('<span class="'+piece.klass()+'">'+piece.html()+'</span>');
             piece.add('hide');
             setScore(guessScore(tile));
             toggleTurn();
