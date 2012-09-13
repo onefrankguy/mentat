@@ -230,7 +230,6 @@ var Mentat = (function ($, dnd) {
           for (i = 0; i < pieces.length; i += 1) {
             piece = $(pieces[i]);
             if (!piece.has('hide')) {
-              console.log('checking piece ' + i);
               value = piece.int();
               for (j = 0; j < playables.length; j += 1) {
                 score = guessScore(playables[j], value);
@@ -242,13 +241,6 @@ var Mentat = (function ($, dnd) {
           }
 
           fakeMove(best.piece, best.tile);
-
-          if (best.piece && best.tile) {
-            console.log('Best move is:');
-            console.log('Piece: ' + best.piece.innerHTML);
-            console.log('Tile: ' + best.tile.className);
-            console.log('Score: ' + best.score);
-          }
         }
 
         , toggleTurn = function () {
@@ -286,7 +278,6 @@ var Mentat = (function ($, dnd) {
         , endTurn = function (piece, tile) {
             piece = $(piece);
             tile = $(tile);
-            console.log(piece.klass());
             tile.data(piece.html());
             tile.html('<span class="'+piece.klass()+' piece">'+piece.html()+'</span>');
             piece.add('hide');
