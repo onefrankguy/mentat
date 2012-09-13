@@ -191,6 +191,9 @@ em {
   border: 0.125em solid #586e75;
   border-radius: 2em;
 }
+#info:hover {
+  border-color: #d33682;
+}
 #notes {
   clear: both;
 }
