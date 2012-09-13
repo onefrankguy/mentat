@@ -7,14 +7,14 @@
 </head>
 <body>
   <h1>Mentat</h1>
-  <p id="player1">
+  <div id="player1">
     <span id="player1icon" class="human-icon"><span class="cyan"></span><span class="cyan"></span></span>
     <span id="player1score" class="score">0</span>
-  </p>
-  <p id="player2">
+  </div>
+  <div id="player2">
     <span id="player2icon"  class="computer-icon"><span class="yellow"></span><span class="yellow"></span></span>
     <span id="player2score" class="score">0</span>
-  </p>
+  </div>
   <ul id="player2pieces">
     <li class="yellow piece">0</li>
     <li class="yellow piece">0</li>
@@ -74,6 +74,13 @@
     <p>So if you&rsquo;re first move is a 5 in a corner, you&rsquo;ll score 3 points. Five goes into five one time, and you score once for each row, column, and diagonal.</p>
     <p>Additionally, you can score bonus points for getting two of a kind (2 points), three of a kind (6 points), four of a kind (12 points), or four consecutive numbers (4 points) in the same row, column, or diagonal.</p>
     <p>There are 52 pieces in the game, four sets of 1 through 13.</p>
+    <h2>Taking Turns</h2>
+    <p>You can click the human and computer icons above the scores to toggle playing modes.</p>
+    <p class="center">
+      <span class="human-icon"><span class="magenta"></span><span class="magenta"></span></span>
+      <span class="computer-icon"><span class="magenta"></span><span class="magenta"></span></span>
+    </p>
+    <p>Play against a friend, or have the computer go first if you want more of a challenge.</p>
   </div>
   <p id="credits">Design <abbr title="and">&amp;</abbr> dev by <a href="http://frankmitchell.org/" title="designer, engineer, wizard">Frank Mitchell</a> for <a href="http://js13kgames.com/" title="HTML5 and JavaScript Game Development competition in just 13 kilobytes">js13kGames</a>.<br />Colored with <a href="http://ethanschoonover.com/solarized" title="Ethan Schoonover&rsquo;s precision colors for machines and people">Solarized</a> and inspired by <em><a href="http://www.pagat.com/invented/kstevens/index.htm" title="Rules for playing Keith Stevens&rsquo; card game">DOM</a></em>.</p>
   <script type="text/javascript" src="js/jquery.js"></script>

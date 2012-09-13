@@ -48,7 +48,7 @@ body {
 h1 {
   text-align: center;
   margin: 0 auto;
-  padding: 0.5em 0 0.25em 0;
+  padding: 0.5em 0;
   width: 33%;
   font-size: 2em;
 }
@@ -176,7 +176,7 @@ em {
 .center {
   text-align: center;
 }
-#player1 span, #player2 span {
+.human-icon span, .computer-icon span {
   display: block;
   margin: 0 auto;
 }
@@ -195,19 +195,26 @@ em {
   clear: both;
 }
 .score {
+  display: block;
+  margin: 0 auto;
   font-size: 1.25em;
 }
 .human-icon, .computer-icon {
+  display: inline-block;
   width: 2em;
   padding: 0.5em 0;
 }
 .human-icon span:first-child {
+  display: block;
+  margin: 0 auto;
   height: 0.725em;
   width: 0.6em;
   border: 0.0625em solid #586e75;
   border-radius: 0.5em;
 }
 .human-icon span:last-child {
+  display: block;
+  margin: 0 auto;
   height: 1em;
   width: 0.75em;
   border: 0.0625em solid #586e75;
