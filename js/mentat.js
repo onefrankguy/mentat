@@ -164,6 +164,9 @@ var Mentat = (function ($, dnd) {
             piece = $(pieces[i]);
             piece.html(values.shift());
             piece.remove('hide');
+            piece.remove('moving');
+            piece.left(0);
+            piece.top(0);
             if (mode === 'cvc' ||
                (mode === 'hvc' && player === 1) ||
                (mode === 'cvh' && player === 2)) {
