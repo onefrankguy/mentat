@@ -1,7 +1,9 @@
 var jQuery = (function (doc) {
   'use strict';
 
-  var Fn = function (selector) {
+  var animations = [],
+
+  Fn = function (selector) {
     var i, nodes, results = [];
     if (selector instanceof Fn) {
       return selector;
@@ -40,6 +42,18 @@ var jQuery = (function (doc) {
     element = root(doc.elementFromPoint(x, y));
     obstruction.remove('hide');
     return element;
+  };
+
+  root.stopAnimations = function () {
+    var i, element, callback, klass;
+    for (i = 0; i < animations.length; i += 1) {
+      element = animations[i].element;
+      callback = animations[i].callback;
+      klass = animations[i].class;
+      element.off('webkitTransitionEnd', callback);
+      element.off('otransitionend', callback);
+      element.remove(klass);
+    }
   };
 
   Fn.prototype.html = function (value) {
@@ -128,6 +142,15 @@ var jQuery = (function (doc) {
     var wrapper, self = this;
     if (this.element) {
       wrapper = function () {
+        var i, temp = [];
+        for (i = 0; i < animations.length; i += 1) {
+          if (animations[i].element !== self &&
+              animations[i].callback !== wrapper &&
+              animations[i].class !== klass) {
+            temp.push(animations[i]);
+          }
+        }
+        animations = temp;
         self.off('webkitTransitionEnd', wrapper);
         self.off('otransitionend', wrapper);
         self.remove(klass);
@@ -135,6 +158,7 @@ var jQuery = (function (doc) {
           callback();
         }
       };
+      animations.push({ element: self, callback: wrapper, class: klass });
       this.on('webkitTransitionEnd', wrapper);
       this.on('otransitionend', wrapper);
       this.add(klass);

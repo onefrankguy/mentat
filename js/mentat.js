@@ -305,6 +305,8 @@ var Mentat = (function ($, dnd) {
               , pieces = []
               ;
 
+            $.stopAnimations();
+
             for (i = 0; i < 4; i += 1) {
               for (j = 1; j <= 13; j += 1) {
                 pieces.push(j);
