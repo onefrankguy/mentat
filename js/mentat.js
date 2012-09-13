@@ -346,6 +346,19 @@ var Mentat = (function ($, dnd) {
         , play = function () {
             $('#player1icon').on('mousedown', onIconPress);
             $('#player2icon').on('mousedown', onIconPress);
+            $('#notes').add('hide');
+            $('#info').on('mousedown', function () {
+              var wrapper = function () {
+                var notes = $('#notes');
+                doc.off('mouseup', wrapper);
+                if (notes.has('hide')) {
+                  notes.remove('hide');
+                } else {
+                  notes.add('hide');
+                }
+              };
+              doc.on('mouseup', wrapper);
+            });
             restart();
           }
         ;
