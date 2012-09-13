@@ -88,6 +88,14 @@ var jQuery = (function (doc) {
     }
   };
 
+  Fn.prototype.toggle = function (klass) {
+    if (this.has(klass)) {
+      this.remove(klass);
+    } else {
+      this.add(klass);
+    }
+  }
+
   Fn.prototype.has = function (klass) {
     if (this.element) {
       return this.element.className.indexOf(klass) >= 0;

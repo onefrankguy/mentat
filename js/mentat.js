@@ -329,13 +329,8 @@ var Mentat = (function ($, dnd) {
         , onIconPress = function (e) {
             var element = $(this), wrapper = function (e) {
               doc.off('mouseup', wrapper);
-              if (element.has('human-icon')) {
-                element.remove('human-icon');
-                element.add('computer-icon');
-              } else if (element.has('computer-icon')) {
-                element.remove('computer-icon');
-                element.add('human-icon');
-              }
+              element.toggle('human-icon');
+              element.toggle('computer-icon');
               restart();
               return false;
             };
@@ -349,13 +344,8 @@ var Mentat = (function ($, dnd) {
             $('#notes').add('hide');
             $('#info').on('mousedown', function () {
               var wrapper = function () {
-                var notes = $('#notes');
                 doc.off('mouseup', wrapper);
-                if (notes.has('hide')) {
-                  notes.remove('hide');
-                } else {
-                  notes.add('hide');
-                }
+                $('#notes').toggle('hide');
               };
               doc.on('mouseup', wrapper);
             });
