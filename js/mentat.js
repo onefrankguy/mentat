@@ -247,6 +247,7 @@ var Mentat = (function ($, dnd) {
             var i = 0
               , mode = getMode()
               , pieces = getPieces()
+              , klass = ''
               ;
 
             for (i = 0; i < pieces.length; i += 1) {
@@ -257,10 +258,11 @@ var Mentat = (function ($, dnd) {
             }
 
             currentPlayer = (currentPlayer === 1) ? 2 : 1;
+            klass = (currentPlayer === 1) ? 'dropping-cyan' : 'dropping-yellow';
 
             pieces = getPieces();
             for (i = 0; i < pieces.length; i += 1) {
-              dnd.bind(pieces[i], isPlayable, callback);
+              dnd.bind(pieces[i], isPlayable, callback, klass);
               if ((currentPlayer === 1 && mode === 'hvc') ||
                   (currentPlayer === 2 && mode === 'cvh') ||
                   (mode === 'hvh' || mode === 'cvc')) {

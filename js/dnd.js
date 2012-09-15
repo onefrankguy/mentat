@@ -9,14 +9,15 @@ var DragDrop = (function ($, doc) {
     , dropped = $()
     , droppable = null
     , fin = null
+    , dropping = ''
 
     , onMove = function (e) {
         dragged.left(startX + (e.clientX - initialX));
         dragged.top(startY + (e.clientY - initialY));
-        dropped.remove('dropping');
+        dropped.remove(dropping);
         dropped = $.fromPoint(e.clientX, e.clientY, dragged);
         if (droppable(dropped)) {
-          dropped.add('dropping');
+          dropped.add(dropping);
         }
         return false;
       }
@@ -26,7 +27,7 @@ var DragDrop = (function ($, doc) {
         doc.off('mousemove', onMove);
         dragged.remove('dragging');
         dropped = $.fromPoint(e.clientX, e.clientY, dragged);
-        dropped.remove('dropping');
+        dropped.remove(dropping);
         if (droppable(dropped)) {
           fin(dragged, dropped);
         }
@@ -52,13 +53,14 @@ var DragDrop = (function ($, doc) {
         return false;
       }
 
-    , bind = function (element, check, done) {
+    , bind = function (element, check, done, klass) {
         element = $(element);
         element.on('mousedown', onStart);
         element.left(0);
         element.top(0);
         droppable = check;
         fin = done;
+        dropping = klass;
       }
 
     , unbind = function (element) {
