@@ -37,10 +37,10 @@ var jQuery = (function (doc) {
   };
 
   root.fromPoint = function (x, y, obstruction) {
-    var element, hidden = root(obstruction);
-    hidden.add('hide');
+    var element, hideable = root(obstruction);
+    hideable.add('hide');
     element = root(doc.elementFromPoint(x, y));
-    hidden.remove('hide');
+    hideable.remove('hide');
     return element;
   };
 
