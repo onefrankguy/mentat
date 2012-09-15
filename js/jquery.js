@@ -52,6 +52,7 @@ var jQuery = (function (doc) {
       klass = animations[i].klass;
       element.off('webkitTransitionEnd', callback);
       element.off('otransitionend', callback);
+      element.off('transitionend', callback);
       element.remove(klass);
     }
   };
@@ -161,6 +162,7 @@ var jQuery = (function (doc) {
         animations = temp;
         self.off('webkitTransitionEnd', wrapper);
         self.off('otransitionend', wrapper);
+        self.off('transitionend', wrapper);
         self.remove(klass);
         if (callback) {
           callback();
@@ -169,6 +171,7 @@ var jQuery = (function (doc) {
       animations.push({ element: self, callback: wrapper, klass: klass });
       this.on('webkitTransitionEnd', wrapper);
       this.on('otransitionend', wrapper);
+      this.on('transitionend', wrapper);
       this.add(klass);
     }
   };

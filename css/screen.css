@@ -32,6 +32,7 @@ green:     #859900;
   background: transparent;
   cursor: default;
   -webkit-user-select: none;
+  -moz-user-select: none;
 }
 *::selection {
   background: transparent;
@@ -84,6 +85,7 @@ table {
 }
 td {
   text-align: center;
+  vertical-align: middle;
   width: 4em;
   height: 4em;
   line-height: 4em;
@@ -168,6 +170,7 @@ em {
 }
 .moving {
   -webkit-transition: top 2s, left 2s;
+  -moz-transition: top 2s, left 2s;
   -o-transition: top 2s, left 2s;
   z-index: 1;
 }
