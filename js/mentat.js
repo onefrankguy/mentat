@@ -187,7 +187,7 @@ var Mentat = (function ($, dnd) {
           }
         }
 
-      , fakeMove = function (piece, tile) {
+      , fakeMove = function (piece, tile, callback) {
           var startX = 0
             , startY = 0
             ;
@@ -199,7 +199,7 @@ var Mentat = (function ($, dnd) {
             startY = piece.top();
             piece.add('playing');
             piece.animate('moving', function () {
-              endTurn(piece, tile);
+              callback(piece, tile);
               piece.remove('playing');
               piece.left(startX);
               piece.top(startY);
@@ -209,7 +209,7 @@ var Mentat = (function ($, dnd) {
           }
         }
 
-      , makeMove = function () {
+      , makeMove = function (callback) {
           var i = 0
             , j = 0
             , tiles = $('<td>')
@@ -240,10 +240,10 @@ var Mentat = (function ($, dnd) {
             }
           }
 
-          fakeMove(best.piece, best.tile);
+          fakeMove(best.piece, best.tile, callback);
         }
 
-        , toggleTurn = function () {
+        , toggleTurn = function (callback) {
             var i = 0
               , mode = getMode()
               , pieces = getPieces()
@@ -260,7 +260,7 @@ var Mentat = (function ($, dnd) {
 
             pieces = getPieces();
             for (i = 0; i < pieces.length; i += 1) {
-              dnd.bind(pieces[i], isPlayable, endTurn);
+              dnd.bind(pieces[i], isPlayable, callback);
               if ((currentPlayer === 1 && mode === 'hvc') ||
                   (currentPlayer === 2 && mode === 'cvh') ||
                   (mode === 'hvh' || mode === 'cvc')) {
@@ -271,7 +271,7 @@ var Mentat = (function ($, dnd) {
             if (mode === 'cvc' ||
                (mode === 'cvh' && currentPlayer === 1) ||
                (mode === 'hvc' && currentPlayer === 2)) {
-              makeMove();
+              makeMove(callback);
             }
           }
 
@@ -282,7 +282,7 @@ var Mentat = (function ($, dnd) {
             tile.html('<span class="'+piece.klass()+'">'+piece.html()+'</span>');
             piece.add('hide');
             setScore(guessScore(tile));
-            toggleTurn();
+            toggleTurn(endTurn);
         }
 
         , shuffle = function (array) {
@@ -323,11 +323,11 @@ var Mentat = (function ($, dnd) {
             setScore(0, 1);
             setScore(0, 2);
 
-            toggleTurn();
+            toggleTurn(endTurn);
           }
 
-        , onIconPress = function (e) {
-            var element = $(this), wrapper = function (e) {
+        , onIconPress = function () {
+            var element = $(this), wrapper = function () {
               doc.off('mouseup', wrapper);
               element.toggle('human-icon');
               element.toggle('computer-icon');
