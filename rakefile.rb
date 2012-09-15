@@ -19,6 +19,18 @@ task :jslint do
   lint ['document', 'jQuery', 'DragDrop'], 'js/mentat.js'
 end
 
+begin
+  gem 'deadweight'
+  desc 'Checks for unused CSS selectors.'
+  task :deadweight do
+    css = Dir['css/*.css']
+    css.map! { |file| "-s #{file}" }
+    css = css.join(' ')
+    sh "deadweight #{css} index.html"
+  end
+rescue Gem::LoadError
+end
+
 def lint predefs, file
   predefs.map! { |var| "--predef #{var}" }
   predefs = predefs.join(' ')
