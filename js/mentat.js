@@ -328,8 +328,8 @@ var Mentat = (function ($, dnd) {
             toggleTurn(endTurn);
           }
 
-        , onIconPress = function () {
-            var element = $(this), wrapper = function () {
+        , onIconPress = function (e) {
+            var element = $(e.currentTarget), wrapper = function () {
               doc.off('mouseup', wrapper);
               element.toggle('human');
               element.toggle('computer');

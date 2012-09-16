@@ -42,7 +42,7 @@ var DragDrop = (function ($, doc) {
         if (dragged.unwrap()) {
           onStop();
         }
-        dragged = $(this);
+        dragged = $(e.currentTarget);
         dragged.add('dragging');
         startX = dragged.left();
         startY = dragged.top();
