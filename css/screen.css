@@ -123,6 +123,7 @@ em {
 .piece {
   position: relative;
   display: inline-block;
+  margin: 0 auto;
   height: 2.5em;
   width: 2.5em;
   line-height: 2.5em;
@@ -144,9 +145,6 @@ em {
 }
 .piece.yellow {
   border: 0.25em dotted #b58900;
-}
-.piece {
-  margin: 0 auto;
 }
 .dragging {
   z-index: 1;
