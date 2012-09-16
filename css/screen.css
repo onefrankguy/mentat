@@ -156,10 +156,6 @@ em {
 .center {
   text-align: center;
 }
-.human-icon span, .computer-icon span {
-  display: block;
-  margin: 0 auto;
-}
 #info {
   display: inline-block;
   float: left;
@@ -182,12 +178,26 @@ em {
   margin: 0 auto;
   font-size: 1.25em;
 }
-.human-icon, .computer-icon {
+.icon {
   display: inline-block;
+  background: transparent !important;
   width: 2em;
   padding: 0.5em 0;
 }
-.human-icon span:first-child {
+.icon span {
+  display: block;
+  margin: 0 auto;
+}
+.icon.cyan span {
+  background: #2aa198;
+}
+.icon.yellow span {
+  background: #b58900;
+}
+.icon.magenta span {
+  background: #d33682;
+}
+.human.icon span:first-child {
   display: block;
   margin: 0 auto;
   height: 0.725em;
@@ -195,7 +205,7 @@ em {
   border: 0.0625em solid #586e75;
   border-radius: 0.5em;
 }
-.human-icon span:last-child {
+.human.icon span:last-child {
   display: block;
   margin: 0 auto;
   height: 1em;
@@ -203,14 +213,14 @@ em {
   border: 0.0625em solid #586e75;
   border-radius: 0.5em 0.5em 0 0;
 }
-.computer-icon span:first-child {
+.computer.icon span:first-child {
   height: 1em;
   width: 1.5em;
   border-radius: 0.125em;
   border: 0.125em solid transparent;
   box-shadow: 0 0 0 0.0625em rgba(88,110,117,1), inset 0 0 0 0.0625em rgba(88,110,117,1), inset 0 1em 0 0.0625em rgba(238,232,213,1);
 }
-.computer-icon span:last-child {
+.computer.icon span:last-child {
   height: 0.6em;
   width: 1.5em;
   border: 0.0625em solid #586e75;

@@ -138,16 +138,16 @@ var Mentat = (function ($, dnd) {
             , player2 = $('#player2icon')
             ;
 
-          if (player1.has('human-icon') && player2.has('human-icon')) {
+          if (player1.has('human') && player2.has('human')) {
             return 'hvh';
           }
-          if (player1.has('human-icon') && player2.has('computer-icon')) {
+          if (player1.has('human') && player2.has('computer')) {
             return 'hvc';
           }
-          if (player1.has('computer-icon') && player2.has('human-icon')) {
+          if (player1.has('computer') && player2.has('human')) {
             return 'cvh';
           }
-          if (player1.has('computer-icon') && player2.has('computer-icon')) {
+          if (player1.has('computer') && player2.has('computer')) {
             return 'cvc';
           }
           return '';
@@ -331,8 +331,8 @@ var Mentat = (function ($, dnd) {
         , onIconPress = function () {
             var element = $(this), wrapper = function () {
               doc.off('mouseup', wrapper);
-              element.toggle('human-icon');
-              element.toggle('computer-icon');
+              element.toggle('human');
+              element.toggle('computer');
               restart();
               return false;
             };
