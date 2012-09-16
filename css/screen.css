@@ -189,36 +189,37 @@ em {
   width: 2em;
   padding: 0.5em 0;
 }
-.icon span {
+.icon:before,
+.icon:after {
   display: block;
   margin: 0 auto;
+  content: '';
 }
-.icon.cyan span {
+.icon.cyan:before,
+.icon.cyan:after {
   background: #2aa198;
 }
-.icon.yellow span {
+.icon.yellow:before,
+.icon.yellow:after {
   background: #b58900;
 }
-.icon.magenta span {
+.icon.magenta:before,
+.icon.magenta:after {
   background: #d33682;
 }
-.human.icon span:first-child {
-  display: block;
-  margin: 0 auto;
+.human.icon:before {
   width: 0.6em;
   height: 0.725em;
   border: 0.0625em solid #586e75;
   border-radius: 0.5em;
 }
-.human.icon span:last-child {
-  display: block;
-  margin: 0 auto;
+.human.icon:after {
   width: 0.75em;
   height: 1em;
   border: 0.0625em solid #586e75;
   border-radius: 0.5em 0.5em 0 0;
 }
-.computer.icon span:first-child {
+.computer.icon:before {
   width: 1.5em;
   height: 1em;
   border: 0.125em solid transparent;
@@ -228,7 +229,7 @@ em {
     inset 0 0 0 0.0625em rgba(88,110,117,1),
     inset 0 1em 0 0.0625em rgba(238,232,213,1);
 }
-.computer.icon span:last-child {
+.computer.icon:after {
   width: 1.5em;
   height: 0.6em;
   border: 0.0625em solid #586e75;
