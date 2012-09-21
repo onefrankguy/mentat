@@ -218,7 +218,7 @@ var Mentat = (function ($, dnd) {
             , pieces = getPieces()
             , value = 0
             , score = 0
-            , best = { piece: undefined, tile: undefined, score: 0 }
+            , best = { piece: null, tile: null, score: 0 }
             ;
 
           for (i = 0; i < tiles.length; i += 1) {
