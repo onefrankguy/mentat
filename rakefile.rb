@@ -34,10 +34,16 @@ end
 def lint predefs, file
   predefs.map! { |var| "--predef #{var}" }
   predefs = predefs.join(' ')
-  sh "jslint --white #{predefs} #{file}"
+  run "jslint --white #{predefs} #{file}"
 end
 
 def percent size
   max = 13 * 1024
   (size.to_f / max.to_f * 100).to_i
+end
+
+def run command
+  puts command
+  output = `#{command}`.strip
+  puts output
 end
