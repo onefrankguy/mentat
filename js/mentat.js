@@ -1,7 +1,9 @@
-var Mentat = (function ($, dnd) {
+;(function (Mentat) {
 'use strict';
 
-var doc = $(document)
+var $ = window.jQuery
+  , dnd = window.DragDrop
+  , doc = $(document)
   , currentPlayer = 2
 
 function countScore (total, factor) {
@@ -329,7 +331,7 @@ function onIconPress (e) {
   return false
 }
 
-function play () {
+Mentat.play = function () {
   $('#player1icon').on('mousedown', onIconPress)
   $('#player2icon').on('mousedown', onIconPress)
   $('#notes').add('hide')
@@ -343,8 +345,4 @@ function play () {
   restart()
 }
 
-return { play: play }
-
-}(jQuery, DragDrop))
-
-Mentat.play()
+})(window.Mentat = window.Mentat || {})
