@@ -15,9 +15,7 @@ function getScore () {
 }
 
 function setScore (newScore, player) {
-  if (player === undefined) {
-    player = currentPlayer
-  }
+  player = player || currentPlayer
   $('#player' + player + 'score').html(newScore)
 }
 
@@ -126,9 +124,7 @@ function isPlayable (element) {
 }
 
 function getPieces (player) {
-  if (player === undefined) {
-    player = currentPlayer
-  }
+  player = player || currentPlayer
   return $('#player' + player + 'pieces').kids('li')
 }
 
