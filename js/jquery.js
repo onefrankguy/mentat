@@ -1,8 +1,7 @@
 ;(function () {
   'use strict'
 
-  var root = null
-    , animations = []
+  var animations = []
 
   function Fn (selector) {
     var i = 0
@@ -36,7 +35,7 @@
     return this
   }
 
-  root = function (selector) {
+  function root (selector) {
     return new Fn(selector)
   }
 
