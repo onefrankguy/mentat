@@ -1,7 +1,9 @@
-var DragDrop = (function ($, doc) {
+;(function (DragDrop) {
   'use strict'
 
-  var initialX = 0
+  var $ = window.jQuery
+    , doc = $(document)
+    , initialX = 0
     , initialY = 0
     , startX = 0
     , startY = 0
@@ -53,7 +55,7 @@ var DragDrop = (function ($, doc) {
     return false
   }
 
-  function bind (element, check, done, klass) {
+  DragDrop.bind = function (element, check, done, klass) {
     element = $(element)
     element.on('mousedown', onStart)
     element.left(0)
@@ -63,10 +65,8 @@ var DragDrop = (function ($, doc) {
     dropping = klass
   }
 
-  function unbind (element) {
+  DragDrop.unbind = function (element) {
     $(element).off('mousedown', onStart)
   }
 
-  return { bind: bind, unbind: unbind }
-
-}(jQuery, jQuery(document)))
+})(window.DragDrop = window.DragDrop || {})
