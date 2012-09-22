@@ -1,5 +1,5 @@
 var jQuery = (function (doc) {
-  'use strict';
+  'use strict'
 
   var animations = [],
 
@@ -7,225 +7,225 @@ var jQuery = (function (doc) {
     var i = 0
       , nodes = []
       , results = []
-      ;
+
     if (selector instanceof Fn) {
-      return selector;
+      return selector
     }
-    this.element = selector;
+    this.element = selector
     if (typeof selector === 'string') {
       if (selector.indexOf('#') === 0) {
-        this.element = document.getElementById(selector.slice(1));
+        this.element = document.getElementById(selector.slice(1))
       }
       if (selector.indexOf('.') === 0) {
-        nodes = doc.getElementsByClassName(selector.slice(1));
+        nodes = doc.getElementsByClassName(selector.slice(1))
         for (i = 0; i < nodes.length; i += 1) {
-          results.push(new Fn(nodes[i]));
+          results.push(new Fn(nodes[i]))
         }
-        return results;
+        return results
       }
       if (selector.indexOf('<') === 0) {
-        selector = selector.slice(1, -1);
-        nodes = doc.getElementsByTagName(selector);
+        selector = selector.slice(1, -1)
+        nodes = doc.getElementsByTagName(selector)
         for (i = 0; i < nodes.length; i += 1) {
-          results.push(new Fn(nodes[i]));
+          results.push(new Fn(nodes[i]))
         }
-        return results;
+        return results
       }
     }
-    return this;
+    return this
   },
 
   root = function (selector) {
-    return new Fn(selector);
-  };
+    return new Fn(selector)
+  }
 
   root.fromPoint = function (x, y, obstruction) {
     var element = null
       , hidden = root(obstruction)
-      ;
-    hidden.add('hide');
-    element = root(doc.elementFromPoint(x, y));
-    hidden.remove('hide');
-    return element;
-  };
+
+    hidden.add('hide')
+    element = root(doc.elementFromPoint(x, y))
+    hidden.remove('hide')
+    return element
+  }
 
   root.stopAnimations = function () {
     var i = 0
       , element = null
       , callback = null
       , klass = null
-      ;
+
     for (i = 0; i < animations.length; i += 1) {
-      element = animations[i].element;
-      callback = animations[i].callback;
-      klass = animations[i].klass;
-      element.off('webkitTransitionEnd', callback);
-      element.off('otransitionend', callback);
-      element.off('transitionend', callback);
-      element.remove(klass);
+      element = animations[i].element
+      callback = animations[i].callback
+      klass = animations[i].klass
+      element.off('webkitTransitionEnd', callback)
+      element.off('otransitionend', callback)
+      element.off('transitionend', callback)
+      element.remove(klass)
     }
-  };
+  }
 
   Fn.prototype.html = function (value) {
     if (this.element) {
       if (value === undefined) {
-        return this.element.innerHTML;
+        return this.element.innerHTML
       }
-      this.element.innerHTML = value;
+      this.element.innerHTML = value
     }
-    return this;
-  };
+    return this
+  }
 
   Fn.prototype.int = function () {
-    return parseInt(this.html(), 10);
-  };
+    return parseInt(this.html(), 10)
+  }
 
   Fn.prototype.top = function (value) {
     if (this.element) {
       if (value === undefined) {
-        return parseInt(this.element.style.top, 10);
+        return parseInt(this.element.style.top, 10)
       }
-      this.element.style.top = value + 'px';
+      this.element.style.top = value + 'px'
     }
-  };
+  }
 
   Fn.prototype.left = function (value) {
     if (this.element) {
       if (value === undefined) {
-        return parseInt(this.element.style.left, 10);
+        return parseInt(this.element.style.left, 10)
       }
-      this.element.style.left = value + 'px';
+      this.element.style.left = value + 'px'
     }
-  };
+  }
 
   Fn.prototype.toggle = function (klass) {
     if (this.has(klass)) {
-      this.remove(klass);
+      this.remove(klass)
     } else {
-      this.add(klass);
+      this.add(klass)
     }
-  };
+  }
 
   Fn.prototype.has = function (klass) {
     if (this.element) {
-      return this.element.className.indexOf(klass) >= 0;
+      return this.element.className.indexOf(klass) >= 0
     }
-    return false;
-  };
+    return false
+  }
 
   Fn.prototype.add = function (klass) {
     if (this.element) {
-      klass = ' ' + klass;
+      klass = ' ' + klass
       if (this.element.className.indexOf(klass) < 0) {
-        this.element.className += klass;
+        this.element.className += klass
       }
     }
-  };
+  }
 
   Fn.prototype.remove = function (klass) {
     if (this.element) {
-      var regex = new RegExp('(\\s+)?' + klass, 'g');
-      this.element.className = this.element.className.replace(regex, '');
+      var regex = new RegExp('(\\s+)?' + klass, 'g')
+      this.element.className = this.element.className.replace(regex, '')
     }
-    return this;
-  };
+    return this
+  }
 
   Fn.prototype.on = function (message, callback) {
     if (this.element) {
-      this.element.addEventListener(message, callback, false);
+      this.element.addEventListener(message, callback, false)
     }
-  };
+  }
 
   Fn.prototype.off = function (message, callback) {
     if (this.element) {
-      this.element.removeEventListener(message, callback, false);
+      this.element.removeEventListener(message, callback, false)
     }
-  };
+  }
 
   Fn.prototype.center = function () {
     var e = this.element
       , x = 0
       , y = 0
-      ;
+
     if (e) {
-      x = e.offsetWidth / 2;
-      y = e.offsetHeight / 2;
+      x = e.offsetWidth / 2
+      y = e.offsetHeight / 2
     }
     while (e && !isNaN(e.offsetLeft) && !isNaN(e.offsetTop)) {
-      x += e.offsetLeft - e.scrollLeft;
-      y += e.offsetTop - e.scrollTop;
-      e = e.offsetParent;
+      x += e.offsetLeft - e.scrollLeft
+      y += e.offsetTop - e.scrollTop
+      e = e.offsetParent
     }
-    return { x: x, y: y };
-  };
+    return { x: x, y: y }
+  }
 
   Fn.prototype.animate = function (klass, callback) {
     var wrapper = null
       , self = this
-      ;
+
     if (this.element) {
       wrapper = function () {
         var i = 0
           , temp = []
-          ;
+
         for (i = 0; i < animations.length; i += 1) {
           if (animations[i].element !== self &&
               animations[i].callback !== wrapper &&
               animations[i].klass !== klass) {
-            temp.push(animations[i]);
+            temp.push(animations[i])
           }
         }
-        animations = temp;
-        self.off('webkitTransitionEnd', wrapper);
-        self.off('otransitionend', wrapper);
-        self.off('transitionend', wrapper);
-        self.remove(klass);
+        animations = temp
+        self.off('webkitTransitionEnd', wrapper)
+        self.off('otransitionend', wrapper)
+        self.off('transitionend', wrapper)
+        self.remove(klass)
         if (callback) {
-          callback();
+          callback()
         }
-      };
-      animations.push({ element: self, callback: wrapper, klass: klass });
-      this.on('webkitTransitionEnd', wrapper);
-      this.on('otransitionend', wrapper);
-      this.on('transitionend', wrapper);
-      this.add(klass);
+      }
+      animations.push({ element: self, callback: wrapper, klass: klass })
+      this.on('webkitTransitionEnd', wrapper)
+      this.on('otransitionend', wrapper)
+      this.on('transitionend', wrapper)
+      this.add(klass)
     }
-  };
+  }
 
   Fn.prototype.name = function () {
     if (this.element) {
-      return this.element.nodeName;
+      return this.element.nodeName
     }
-    return '';
-  };
+    return ''
+  }
 
   Fn.prototype.data = function (value) {
     if (this.element) {
       if (value === undefined) {
-        return parseInt(this.element.getAttribute('data-value'), 10);
+        return parseInt(this.element.getAttribute('data-value'), 10)
       }
-      this.element.setAttribute('data-value', value);
+      this.element.setAttribute('data-value', value)
     }
-    return '';
-  };
+    return ''
+  }
 
   Fn.prototype.klass = function () {
     if (this.element) {
-      return this.element.className;
+      return this.element.className
     }
-    return '';
-  };
+    return ''
+  }
 
   Fn.prototype.kids = function (value) {
     if (this.element) {
-      return this.element.getElementsByTagName(value);
+      return this.element.getElementsByTagName(value)
     }
-    return [];
-  };
+    return []
+  }
 
   Fn.prototype.unwrap = function () {
-    return this.element;
-  };
+    return this.element
+  }
 
-  return root;
-}(document));
+  return root
+}(document))
