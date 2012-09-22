@@ -35,37 +35,6 @@
     return this
   }
 
-  function root (selector) {
-    return new Fn(selector)
-  }
-
-  root.fromPoint = function (x, y, obstruction) {
-    var element = null
-      , hidden = root(obstruction)
-
-    hidden.add('hide')
-    element = root(document.elementFromPoint(x, y))
-    hidden.remove('hide')
-    return element
-  }
-
-  root.stopAnimations = function () {
-    var i = 0
-      , element = null
-      , callback = null
-      , klass = null
-
-    for (i = 0; i < animations.length; i += 1) {
-      element = animations[i].element
-      callback = animations[i].callback
-      klass = animations[i].klass
-      element.off('webkitTransitionEnd', callback)
-      element.off('otransitionend', callback)
-      element.off('transitionend', callback)
-      element.remove(klass)
-    }
-  }
-
   Fn.prototype.html = function (value) {
     if (this.element) {
       if (value === undefined) {
@@ -225,6 +194,37 @@
 
   Fn.prototype.unwrap = function () {
     return this.element
+  }
+
+  function root (selector) {
+    return new Fn(selector)
+  }
+
+  root.fromPoint = function (x, y, obstruction) {
+    var element = null
+      , hidden = root(obstruction)
+
+    hidden.add('hide')
+    element = root(document.elementFromPoint(x, y))
+    hidden.remove('hide')
+    return element
+  }
+
+  root.stopAnimations = function () {
+    var i = 0
+      , element = null
+      , callback = null
+      , klass = null
+
+    for (i = 0; i < animations.length; i += 1) {
+      element = animations[i].element
+      callback = animations[i].callback
+      klass = animations[i].klass
+      element.off('webkitTransitionEnd', callback)
+      element.off('otransitionend', callback)
+      element.off('transitionend', callback)
+      element.remove(klass)
+    }
   }
 
   window.jQuery = root
