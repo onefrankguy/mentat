@@ -4,7 +4,10 @@ var jQuery = (function (doc) {
   var animations = [],
 
   Fn = function (selector) {
-    var i, nodes, results = [];
+    var i = 0
+      , nodes = []
+      , results = []
+      ;
     if (selector instanceof Fn) {
       return selector;
     }
@@ -37,7 +40,9 @@ var jQuery = (function (doc) {
   };
 
   root.fromPoint = function (x, y, obstruction) {
-    var element, hidden = root(obstruction);
+    var element = null
+      , hidden = root(obstruction)
+      ;
     hidden.add('hide');
     element = root(doc.elementFromPoint(x, y));
     hidden.remove('hide');
@@ -45,7 +50,11 @@ var jQuery = (function (doc) {
   };
 
   root.stopAnimations = function () {
-    var i, element, callback, klass;
+    var i = 0
+      , element = null
+      , callback = null
+      , klass = null
+      ;
     for (i = 0; i < animations.length; i += 1) {
       element = animations[i].element;
       callback = animations[i].callback;
@@ -134,7 +143,10 @@ var jQuery = (function (doc) {
   };
 
   Fn.prototype.center = function () {
-    var e = this.element, x = 0, y = 0;
+    var e = this.element
+      , x = 0
+      , y = 0
+      ;
     if (e) {
       x = e.offsetWidth / 2;
       y = e.offsetHeight / 2;
@@ -148,10 +160,14 @@ var jQuery = (function (doc) {
   };
 
   Fn.prototype.animate = function (klass, callback) {
-    var wrapper, self = this;
+    var wrapper = null
+      , self = this
+      ;
     if (this.element) {
       wrapper = function () {
-        var i, temp = [];
+        var i = 0
+          , temp = []
+          ;
         for (i = 0; i < animations.length; i += 1) {
           if (animations[i].element !== self &&
               animations[i].callback !== wrapper &&
