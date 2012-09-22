@@ -1,4 +1,4 @@
-var jQuery = (function (doc) {
+var jQuery = (function () {
   'use strict'
 
   var animations = [],
@@ -17,7 +17,7 @@ var jQuery = (function (doc) {
         this.element = document.getElementById(selector.slice(1))
       }
       if (selector.indexOf('.') === 0) {
-        nodes = doc.getElementsByClassName(selector.slice(1))
+        nodes = document.getElementsByClassName(selector.slice(1))
         for (i = 0; i < nodes.length; i += 1) {
           results.push(new Fn(nodes[i]))
         }
@@ -25,7 +25,7 @@ var jQuery = (function (doc) {
       }
       if (selector.indexOf('<') === 0) {
         selector = selector.slice(1, -1)
-        nodes = doc.getElementsByTagName(selector)
+        nodes = document.getElementsByTagName(selector)
         for (i = 0; i < nodes.length; i += 1) {
           results.push(new Fn(nodes[i]))
         }
@@ -44,7 +44,7 @@ var jQuery = (function (doc) {
       , hidden = root(obstruction)
 
     hidden.add('hide')
-    element = root(doc.elementFromPoint(x, y))
+    element = root(document.elementFromPoint(x, y))
     hidden.remove('hide')
     return element
   }
@@ -228,4 +228,4 @@ var jQuery = (function (doc) {
   }
 
   return root
-}(document))
+}())
