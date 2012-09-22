@@ -1,5 +1,5 @@
 var Mentat = (function ($, dnd) {
-'use strict'
+'use strict';
 
 var doc = $(document)
   , currentPlayer = 2

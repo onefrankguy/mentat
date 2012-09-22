@@ -1,5 +1,5 @@
 ;(function (DragDrop) {
-'use strict'
+'use strict';
 
 var $ = window.jQuery
   , doc = $(document)
