@@ -1,4 +1,4 @@
-var jQuery = (function () {
+;(function () {
   'use strict'
 
   var animations = [],
@@ -227,5 +227,5 @@ var jQuery = (function () {
     return this.element
   }
 
-  return root
-}())
+  window.jQuery = root
+})()
