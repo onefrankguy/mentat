@@ -76,10 +76,7 @@ Fn.prototype.toggle = function (klass) {
 }
 
 Fn.prototype.has = function (klass) {
-  if (this.element) {
-    return this.element.className.indexOf(klass) >= 0
-  }
-  return false
+  return this.element && this.element.className.indexOf(klass) >= 0
 }
 
 Fn.prototype.add = function (klass) {
@@ -162,10 +159,7 @@ Fn.prototype.animate = function (klass, callback) {
 }
 
 Fn.prototype.name = function () {
-  if (this.element) {
-    return this.element.nodeName
-  }
-  return ''
+  return this.element ? this.element.nodeName : ''
 }
 
 Fn.prototype.data = function (value) {
@@ -179,10 +173,7 @@ Fn.prototype.data = function (value) {
 }
 
 Fn.prototype.klass = function () {
-  if (this.element) {
-    return this.element.className
-  }
-  return ''
+  return this.element ? this.element.className : ''
 }
 
 Fn.prototype.kids = function (value) {
