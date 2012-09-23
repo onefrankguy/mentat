@@ -316,14 +316,17 @@ function restart () {
 }
 
 function onIconPress (e) {
-  var element = $(e.currentTarget), wrapper = function () {
-    doc.off('mouseup', wrapper)
+  var element = $(e.currentTarget)
+
+  function onIconRelease () {
+    doc.off('mouseup', onIconRelease)
     element.toggle('human')
     element.toggle('computer')
     restart()
     return false
   }
-  doc.on('mouseup', wrapper)
+
+  doc.on('mouseup', onIconRelease)
   return false
 }
 
