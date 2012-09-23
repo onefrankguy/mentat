@@ -129,34 +129,34 @@ Fn.prototype.center = function () {
 }
 
 Fn.prototype.animate = function (klass, callback) {
-  var wrapper = null
-    , self = this
+  var self = this
 
-  if (this.element) {
-    wrapper = function () {
-      var i = 0
-        , temp = []
+  function onTransitionEnd () {
+    var i = 0
+      , temp = []
 
-      for (i = 0; i < animations.length; i += 1) {
-        if (animations[i].element !== self &&
-            animations[i].callback !== wrapper &&
-            animations[i].klass !== klass) {
-          temp.push(animations[i])
-        }
-      }
-      animations = temp
-      self.off('webkitTransitionEnd', wrapper)
-      self.off('otransitionend', wrapper)
-      self.off('transitionend', wrapper)
-      self.remove(klass)
-      if (callback) {
-        callback()
+    for (i = 0; i < animations.length; i += 1) {
+      if (animations[i].element !== self &&
+          animations[i].callback !== onTransitionEnd &&
+          animations[i].klass !== klass) {
+        temp.push(animations[i])
       }
     }
-    animations.push({ element: self, callback: wrapper, klass: klass })
-    this.on('webkitTransitionEnd', wrapper)
-    this.on('otransitionend', wrapper)
-    this.on('transitionend', wrapper)
+    animations = temp
+    self.off('webkitTransitionEnd', onTransitionEnd)
+    self.off('otransitionend', onTransitionEnd)
+    self.off('transitionend', onTransitionEnd)
+    self.remove(klass)
+    if (callback) {
+      callback()
+    }
+  }
+
+  if (this.element) {
+    animations.push({ element: self, callback: onTransitionEnd, klass: klass })
+    this.on('webkitTransitionEnd', onTransitionEnd)
+    this.on('otransitionend', onTransitionEnd)
+    this.on('transitionend', onTransitionEnd)
     this.add(klass)
   }
 }
