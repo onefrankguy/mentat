@@ -270,7 +270,7 @@ function endTurn (piece, tile) {
   piece = $(piece)
   tile = $(tile)
   tile.data(piece.html())
-  tile.html('<span class="'+piece.klass()+'">'+piece.html()+'</span>')
+  tile.html('<span class="' + piece.klass() + '">' + piece.html() + '</span>')
   piece.add('hide')
   setScore(guessScore(tile))
   toggleTurn(endTurn)
