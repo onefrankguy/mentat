@@ -331,16 +331,20 @@ function onIconPress (e) {
 }
 
 Mentat.play = function () {
+  function onInfoRelease () {
+    doc.off('mouseup', onInfoRelease)
+    $('#notes').toggle('hide')
+  }
+
+  function onInfoPress () {
+    doc.on('mouseup', onInfoRelease)
+  }
+
   $('#player1icon').on('mousedown', onIconPress)
   $('#player2icon').on('mousedown', onIconPress)
   $('#notes').add('hide')
-  $('#info').on('mousedown', function () {
-    var wrapper = function () {
-      doc.off('mouseup', wrapper)
-      $('#notes').toggle('hide')
-    }
-    doc.on('mouseup', wrapper)
-  })
+  $('#info').on('mousedown', onInfoPress)
+
   restart()
 }
 
