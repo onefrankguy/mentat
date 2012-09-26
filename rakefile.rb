@@ -20,6 +20,22 @@ task :lint do
 end
 
 begin
+  gem 'webrick'
+  desc 'Runs a simple web server'
+  task :web, :port do |t, args|
+    port = args[:port] || '8080'
+    src = []
+    src << "a = { :Port => #{port}, :DocumentRoot => Dir.pwd }"
+    src << 's = WEBrick::HTTPServer.new(a)'
+    src << 'trap("INT") { s.shutdown }'
+    src << 's.start'
+    src = "'" + src.join('; ') + "'"
+    ruby "-rwebrick -e #{src}"
+  end
+rescue Gem::LoadError
+end
+
+begin
   gem 'deadweight'
   desc 'Checks for unused CSS selectors.'
   task :deadweight do
